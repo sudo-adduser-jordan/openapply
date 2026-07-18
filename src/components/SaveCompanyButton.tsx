@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
 import clsx from 'clsx'
+import { ListNameInput } from '@/components/ListNameInput'
 import { ChevronDownIcon, StarIcon, PlusIcon } from './icons'
 
 interface SaveCompanyButtonProps {
@@ -252,20 +253,11 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                 </div>
                 {creating ? (
                     <div className='border-t border-[var(--line)] px-3 py-2'>
-                        <input
+                        <ListNameInput
                             value={newListName}
-                            onChange={(e) => setNewListName(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault()
-                                    handleCreateList()
-                                }
-                                if (e.key === 'Escape') {
-                                    setCreating(false)
-                                    setNewListName('')
-                                }
-                            }}
-                            placeholder='List name…'
+                            onChange={setNewListName}
+                            onCreate={handleCreateList}
+                            onCancel={() => { setCreating(false); setNewListName('') }}
                             autoFocus
                             className='w-full rounded-md border border-[var(--line)] bg-[var(--bg)] px-2 py-1 text-[12px] text-[var(--ink)] placeholder:text-[var(--ink-mute)] outline-none focus:border-blue-400/50'
                         />

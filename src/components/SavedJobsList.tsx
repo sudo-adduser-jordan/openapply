@@ -4,10 +4,9 @@ import { useState, useMemo } from 'react'
 import { useSaved } from '@/hooks/use-saved'
 import { SaveJobButton } from '@/components/SaveJobButton'
 import { UnavailableJobCard } from '@/components/UnavailableJobCard'
-import { getJobDate } from '@/utils/format'
 import { useDebounce } from '@/hooks/use-debounce'
 import { getCountry } from '@/utils/format'
-import { matchesSearchTerm } from '@/utils/search'
+import { filterJobsBySearch, sortJobsByLocation, sortJobsByCompany, sortJobsByRecent, sortJobsByTitle } from '@/utils/job-list-utils'
 import type { JobMarker } from '@/types'
 import { JobListSkeleton } from './JobListSkeleton'
 import { JobListSearchSort } from './JobListSearchSort'
@@ -34,43 +33,22 @@ export function SavedJobsList({ jobs }: SavedJobsListProps) {
     const unavailableJobs = useMemo(() => saved.filter((savedItem) => !jobs.find((job) => job.ats_id === savedItem.ats_id)), [saved, jobs])
 
     const processedJobs = useMemo(() => {
-        let filtered = availableSavedJobs
-
-        if (debouncedSearchText.trim()) {
-            const searchTerms = debouncedSearchText
-                .toLowerCase()
-                .split(/\s+/)
-                .filter((term) => term.length > 0)
-
-            filtered = filtered.filter((job) =>
-                searchTerms.every(
-                    (term) =>
-                        matchesSearchTerm(job.title, term) || matchesSearchTerm(job.company, term) || matchesSearchTerm(job.location, term),
-                ),
-            )
-        }
+        let filtered = filterJobsBySearch(availableSavedJobs, debouncedSearchText)
 
         const sorted = [...filtered]
         switch (sortBy) {
             case 'location':
-                sorted.sort((a, b) => a.location.localeCompare(b.location))
+                sortJobsByLocation(sorted)
                 break
             case 'company':
-                sorted.sort((a, b) => a.company.localeCompare(b.company))
+                sortJobsByCompany(sorted)
                 break
             case 'recent':
-                sorted.sort((a, b) => {
-                    const dateA = getJobDate(a)
-                    const dateB = getJobDate(b)
-                    if (!dateA && !dateB) return 0
-                    if (!dateA) return 1
-                    if (!dateB) return -1
-                    return dateB.getTime() - dateA.getTime()
-                })
+                sortJobsByRecent(sorted)
                 break
             case 'title':
             default:
-                sorted.sort((a, b) => a.title.localeCompare(b.title))
+                sortJobsByTitle(sorted)
                 break
         }
 

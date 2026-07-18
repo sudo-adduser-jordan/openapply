@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { ClearAllConfirm } from '@/components/ClearAllConfirm'
+import { ListNameInput } from '@/components/ListNameInput'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
@@ -324,21 +325,12 @@ export function WatchlistContent() {
 
                 {creating ? (
                     <div className='flex items-center gap-1.5 shrink-0 rounded-full border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
-                        <input
-                            ref={createInputRef}
+                        <ListNameInput
+                            inputRef={createInputRef}
                             value={newListName}
-                            onChange={(e) => setNewListName(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault()
-                                    handleCreateList()
-                                }
-                                if (e.key === 'Escape') {
-                                    setCreating(false)
-                                    setNewListName('')
-                                }
-                            }}
-                            placeholder='List name…'
+                            onChange={setNewListName}
+                            onCreate={handleCreateList}
+                            onCancel={() => { setCreating(false); setNewListName('') }}
                             className='w-24 bg-transparent text-[12px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-mute)]'
                         />
                         <button
