@@ -16,6 +16,7 @@ interface JobListItemProps {
     bottomActions?: ReactNode
     hideCompanyMobile?: boolean
     locationChildren?: ReactNode
+    now?: number
 }
 
 export function JobListItem({
@@ -25,6 +26,7 @@ export function JobListItem({
     bottomActions,
     hideCompanyMobile = false,
     locationChildren,
+    now,
 }: JobListItemProps) {
     return (
         <div className='pr-4 pt-2.5 pb-2.5'>
@@ -45,16 +47,16 @@ export function JobListItem({
                     )}
                 </div>
                 <div className='flex items-center gap-1.5 shrink-0'>
-                    {formatJobDate(job) && (
+                    {formatJobDate(job, now ? new Date(now) : undefined) && (
                         <span
                             className={clsx(
                                 'text-[10px] md:text-[11px] font-medium rounded-full px-[6px] py-0.5 border',
-                                formatJobDate(job) === 'New'
+                                formatJobDate(job, now ? new Date(now) : undefined) === 'New'
                                     ? 'bg-[var(--brand-tint)] text-[var(--brand-deep)] border-[var(--brand-tint)]'
                                     : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)]',
                             )}
                         >
-                            {formatJobDate(job)}
+                            {formatJobDate(job, now ? new Date(now) : undefined)}
                         </span>
                     )}
                     {actions}

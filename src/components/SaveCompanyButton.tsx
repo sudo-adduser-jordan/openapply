@@ -29,6 +29,7 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
 
     const inActiveList = isInList(name, activeListId)
     const displayInActiveList = hydrated && inActiveList
+    const showDropdown = watchlists.length > 1
 
     useEffect(() => {
         if (!popoverOpen) return
@@ -136,7 +137,7 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                         strokeLinejoin='round'
                     />
                 </button>
-                {dropdownSection('ml-px p-0.5 text-[var(--ink-faint)] hover:text-[var(--ink-soft)] transition-colors')}
+                {showDropdown && dropdownSection('ml-px p-0.5 text-[var(--ink-faint)] hover:text-[var(--ink-soft)] transition-colors')}
             </div>
         )
     }
@@ -167,7 +168,7 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                     />
                     {isSaved(name) ? (displayInActiveList ? 'Watching' : 'Watched') : 'Watch'}
                 </button>
-                {dropdownSection(clsx(
+                {showDropdown && dropdownSection(clsx(
                     'inline-flex items-center px-1.5 py-1.5 rounded-r-full text-[12px] font-medium',
                     'border transition-[border-color,background-color] duration-200 ease-in-out',
                     displayInActiveList
@@ -205,7 +206,7 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                     />
                 {isSaved(name) ? (displayInActiveList ? 'Watching' : 'Watched') : 'Watch'}
             </button>
-            {dropdownSection(clsx(
+            {showDropdown && dropdownSection(clsx(
                 'inline-flex items-center px-1 py-0.5 rounded-r-full text-[11px] md:text-[12px] font-medium',
                 'border transition-[border-color,background-color] duration-200 ease-in-out',
                 displayInActiveList

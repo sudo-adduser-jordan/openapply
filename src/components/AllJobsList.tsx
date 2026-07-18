@@ -67,6 +67,7 @@ const chipColors: Record<string, { color: string; bg: string; text: string }> = 
 interface AllJobsListProps {
     jobs: Job[]
     hideCompanyName?: boolean
+    now?: number
 }
 
 interface JobWithTimestamp extends Job {
@@ -136,12 +137,15 @@ function parseSearchText(searchText: string): ParsedSearch {
     }
 }
 
-export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps) {
+export function AllJobsList({ jobs, hideCompanyName = false, now: nowProp }: AllJobsListProps) {
     const [ageFilter, setAgeFilter] = useQueryState('age', parseAsInteger.withDefault(null as unknown as number))
     const [localSearchText, setLocalSearchText, debouncedSearchText] = useSyncedSearchParam('search')
     const [sortBy, setSortBy] = useState<SortOption>('recent')
     const [isPending, startTransition] = useTransition()
-    const [now] = useState(Date.now)
+    const [now, setNow] = useState<number>(nowProp ?? 0)
+    useEffect(() => {
+        if (nowProp === undefined) setNow(Date.now())
+    }, [nowProp])
     const [filterOpen, setFilterOpen] = useState(false)
     const [companies, setCompanies] = useQueryState('companies', parseAsArrayOf(parseAsString).withDefault([]))
     const [excludeCompanies, setExcludeCompanies] = useQueryState('exclude', parseAsArrayOf(parseAsString).withDefault([]))
@@ -158,6 +162,8 @@ export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps)
             setLocations(['United States'])
         }
     }, [locations, setLocations])
+
+    console.log('[AllJobsList] jobs.length:', jobs.length, 'first:', jobs[0]?.company, '/', jobs[0]?.title, 'now:', now)
     const extra = useMemo(
         () => ({
             companies,
@@ -248,7 +254,7 @@ export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps)
         let filtered: JobWithTimestamp[] = jobsWithTimestamps
         const effectiveAge = parsedSearch.age !== null ? parsedSearch.age : ageFilter
 
-		if (effectiveAge !== null) {
+		if (effectiveAge !== null && now) {
             const cutoff = now - effectiveAge * 24 * 60 * 60 * 1000
             filtered = filtered.filter((job) => {
                 const timestamp = job._dateTimestamp
@@ -353,6 +359,10 @@ export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps)
     const currentPage = Math.min(Math.max(1, page ?? 1), totalPages)
     const pageJobs = processedJobs.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
     const topRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        console.log('[AllJobsList] hydrated — jobs.length:', jobs.length, 'first:', jobs[0]?.company, '/', jobs[0]?.title, 'now:', now)
+    }, [jobs, now])
 
     // Reset to page 1 when the result set changes (search / sort / filters).
     const didMountRef = useRef(false)
@@ -556,6 +566,7 @@ export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps)
                             excludeCompanies={excludeCompanies}
                             hideCompanyName={hideCompanyName}
                             onCycleCompany={cycleCompany}
+                            now={now}
                         />
                     ))
                 )}

@@ -17,6 +17,7 @@ interface JobItemRowProps {
     excludeCompanies: string[]
     hideCompanyName?: boolean
     onCycleCompany: (name: string) => void
+    now?: number
 }
 
 export function JobItemRow({
@@ -28,9 +29,10 @@ export function JobItemRow({
     excludeCompanies,
     hideCompanyName = false,
     onCycleCompany,
+    now,
 }: JobItemRowProps) {
     const uniqueKey = `${job.ats_id || job.id || 'unknown'}-${(currentPage - 1) * pageSize + index}`
-    const formattedDate = formatJobDate(job)
+    const formattedDate = now ? formatJobDate(job, new Date(now)) : formatJobDate(job)
     const salary = formatSalary(job)
     const experience = formatExperience(job.experience)
     const compIncluded = companies.includes(job.company)

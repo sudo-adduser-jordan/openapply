@@ -1,6 +1,6 @@
 import type { JobMarker } from '@/types'
 
-export function formatJobDate(job: JobMarker): string | null {
+export function formatJobDate(job: JobMarker, now?: Date): string | null {
     if (!job.posted_at) {
         return null
     }
@@ -11,8 +11,8 @@ export function formatJobDate(job: JobMarker): string | null {
         return null
     }
 
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const currentDate = now ?? new Date()
+    const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
     const postedDay = new Date(postedDate.getFullYear(), postedDate.getMonth(), postedDate.getDate())
 
     const diffMs = today.getTime() - postedDay.getTime()

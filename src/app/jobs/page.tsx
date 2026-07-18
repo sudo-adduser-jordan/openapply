@@ -1,40 +1,20 @@
 export const dynamic = 'force-dynamic'
 
 import { Metadata } from 'next'
-import { PageHeader } from '@/components/PageHeader'
-import { Footer } from '@/components/Footer'
-import { JobPageStatsClient } from '@/components/JobPageStatsClient'
 import { AllJobsList } from '@/components/AllJobsList'
 import { fetchJobsSafe } from '@/utils/jobs'
+import { computeManifestStats } from '@/utils/client-manifest'
+import DirectoryLayout from '@/components/DirectoryLayout'
 
 export const metadata: Metadata = {
     title: 'Jobs | OpenApply',
 }
 
-import { computeManifestStats } from '@/utils/client-manifest'
-
 export default async function JobsDirectoryPage() {
     const jobs = await fetchJobsSafe()
-    const stats = computeManifestStats(jobs)
-
     return (
-        <div className='flex h-screen flex-col overflow-y-auto bg-[var(--bg)] text-[var(--ink)]'>
-            <PageHeader />
-
-            <main className='mx-auto w-full max-w-5xl space-y-8 px-6 pb-16 pt-8'>
-                <header>
-                    <h1 className='text-3xl font-semibold tracking-tight md:text-4xl'>
-                        Jobs
-                        <span className='ml-3 text-sm font-normal text-[var(--ink-soft)]'>
-                            <JobPageStatsClient stats={stats} />
-                        </span>
-                    </h1>
-                </header>
-
-                <AllJobsList jobs={jobs} />
-            </main>
-
-            <Footer />
-        </div>
+        <DirectoryLayout title='Jobs' stats={computeManifestStats(jobs)}>
+            <AllJobsList jobs={jobs} now={Date.now()} />
+        </DirectoryLayout>
     )
 }

@@ -7,9 +7,10 @@ import type { JobMarker } from '@/types'
 
 interface CompanyJobsClientProps {
     jobs: JobMarker[]
+    now: number
 }
 
-export function CompanyJobsClient({ jobs }: CompanyJobsClientProps) {
+export function CompanyJobsClient({ jobs, now }: CompanyJobsClientProps) {
     const params = useParams()
     const companySlug = params.company as string
 
@@ -20,5 +21,5 @@ export function CompanyJobsClient({ jobs }: CompanyJobsClientProps) {
         })
     }, [jobs, companySlug])
 
-    return <AllJobsList jobs={filteredJobs} hideCompanyName={true} />
+    return <AllJobsList jobs={filteredJobs} hideCompanyName={true} now={now} />
 }
