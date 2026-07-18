@@ -7,7 +7,6 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
 import { SaveCompanyButton } from '@/components/SaveCompanyButton'
-import { useClientJobs } from '@/hooks/use-client-jobs'
 import { generateCompanySlug } from '@/utils/format'
 import type { JobMarker, WatchlistItem } from '@/types'
 import type { WatchlistCategory } from '@/types'
@@ -49,7 +48,12 @@ function LoadingSkeleton() {
 
 const DEFAULT_LIST_ID = 'default'
 
-export function WatchlistContent() {
+interface WatchlistContentProps {
+    jobs: JobMarker[]
+    watchlistCategories: WatchlistCategory[]
+}
+
+export function WatchlistContent({ jobs: allJobs, watchlistCategories: categories }: WatchlistContentProps) {
     const {
         clearAll,
         isLoading: loadingCompanies,
@@ -61,7 +65,6 @@ export function WatchlistContent() {
         deleteList,
         itemsForList,
     } = useSavedCompanies()
-    const allJobs = useClientJobs()
 
     const [creating, setCreating] = useState(false)
     const [newListName, setNewListName] = useState('')
@@ -73,28 +76,12 @@ export function WatchlistContent() {
 
     const [searchQuery, setSearchQuery] = useState('')
     const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
-    const [categories, setCategories] = useState<WatchlistCategory[]>([])
-    const [categoriesLoaded, setCategoriesLoaded] = useState(false)
-
-    useEffect(() => {
-        if (categoriesLoaded) return
-        fetch('/api/watchlist')
-            .then((r) => r.json())
-            .then((data: { categories: WatchlistCategory[] }) => {
-                if (data.categories) {
-                    setCategories(data.categories)
-                }
-            })
-            .catch(() => {})
-            .finally(() => setCategoriesLoaded(true))
-    }, [categoriesLoaded])
 
     const activeItems = useMemo(() => itemsForList(activeListId), [itemsForList, activeListId])
 
     const activeCompanyNames = useMemo(() => activeItems.map((item) => item.name), [activeItems])
 
     const groupedJobs = useMemo(() => {
-        if (!allJobs) return new Map<string, JobMarker[]>()
         const map = new Map<string, JobMarker[]>()
         for (const name of activeCompanyNames) {
             const companyJobs = allJobs.filter((j) => j.company === name).slice(0, JOBS_PER_PAGE)
@@ -120,7 +107,7 @@ export function WatchlistContent() {
 
     const hasContent = activeCategory ? activeFilteredCompanies.length > 0 : activeItems.length > 0
 
-    const isLoading = loadingCompanies || !allJobs
+    const isLoading = loadingCompanies
     const activeList = watchlists.find((l) => l.id === activeListId)
 
     useEffect(() => {

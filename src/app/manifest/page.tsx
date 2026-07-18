@@ -1,11 +1,23 @@
-'use client'
+export const dynamic = 'force-dynamic'
 
-import { useEffect, useState } from 'react'
+import { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
 import { Footer } from '@/components/Footer'
 import { ManifestAtsCard } from '@/components/ManifestAtsCard'
 import { ManifestFilterableGrid } from '@/components/ManifestFilterableGrid'
 import { TimeAgo } from '@/components/TimeAgo'
+import { fetchManifest } from '@/utils/manifest'
+import {
+    computeManifest,
+    computeJobAtsCards,
+    computeCompanyAtsCards,
+    computeCompanyCards,
+    computeWatchlistCards,
+} from '@/utils/client-manifest'
+
+export const metadata: Metadata = {
+    title: 'Manifest | OpenApply',
+}
 
 const borderClasses = [
     'border-r border-b md:border-b-0',
@@ -88,103 +100,29 @@ function SchemaSection({ label, dotColor, columns, version }: { label: string; d
     )
 }
 
-interface CardData {
-    name: string
-    rows: number
-    parquetUrl?: string
-    parquetSize?: number
-    description?: string
-}
-
-interface ManifestData {
-    manifest: {
-        all: { parquet: string; rows: number; parquet_size_bytes: number; parquet_sha256: string }
-        ats: { parquet: string; rows: number; parquet_size_bytes: number }
-        companies: {
-            parquet: string
-            rows: number
-            parquet_size_bytes: number
-            parquet_sha256: string
-        }
-        watchlist: { parquet: string; rows: number; parquet_size_bytes: number }
-        schemas: {
-            ats: { columns: string[] }
-            companies: { columns: string[] }
-            jobs: { columns: string[] }
-            watchlist: { columns: string[] }
-        }
-        stats: {
-            ats_count: number
-            jobs_24h: number
-            schema_columns: string[]
-            schema_version: string
-            total_companies: number
-            total_jobs: number
-        }
-        version: string
-        generated_at: string
-        updated_at: string
+export default async function ManifestPage() {
+    let jobs: import('@/types').JobMarker[] = []
+    let watchlistCategories: import('@/types').WatchlistCategory[] = []
+    try {
+        const data = await fetchManifest()
+        jobs = data.jobs
+        watchlistCategories = data.watchlistCategories
+    } catch {
+        console.error('Failed to fetch manifest data')
     }
-    stats: { label: string; value: string; colorIndex: number }[]
-    jobAtsCards: CardData[]
-    companyAtsCards: CardData[]
-    watchlistCards: CardData[]
-    companyCards: CardData[]
-}
+    const watchlistTotalCompanies = watchlistCategories.reduce((s, c) => s + c.companies.length, 0)
 
-function LoadingManifest() {
-    return (
-        <div className='flex flex-col items-center justify-center px-6 py-24 text-center'>
-            <div className='mb-4 size-7 animate-spin rounded-full border-2 border-[var(--line-strong)] border-t-[var(--violet)]' />
-            <p className='m-0 text-[14px] font-medium text-[var(--ink-soft)]'>Loading manifest…</p>
-        </div>
-    )
-}
+    const manifest = computeManifest(jobs, watchlistTotalCompanies)
+    const jobAtsCards = computeJobAtsCards(jobs)
+    const companyAtsCards = computeCompanyAtsCards(jobs)
+    const companyCards = computeCompanyCards(jobs)
+    const watchlistCards = computeWatchlistCards(watchlistCategories)
 
-export default function ManifestPage() {
-    const [data, setData] = useState<ManifestData | null>(null)
-    const [error, setError] = useState(false)
-
-    useEffect(() => {
-        let cancelled = false
-        fetch('/api/manifest')
-            .then((res) => res.json())
-            .then((d) => {
-                if (!cancelled) setData(d)
-            })
-            .catch(() => {
-                if (!cancelled) setError(true)
-            })
-        return () => {
-            cancelled = true
-        }
-    }, [])
-
-    if (error) {
-        return (
-            <div className='flex h-screen flex-col overflow-y-auto bg-[var(--bg)] text-[var(--ink)]'>
-                <PageHeader />
-                <main className='mx-auto w-full max-w-7xl px-6 py-12 md:py-16'>
-                    <p className='text-center text-[var(--ink-soft)]'>Failed to load manifest data.</p>
-                </main>
-                <Footer />
-            </div>
-        )
-    }
-
-    if (!data) {
-        return (
-            <div className='flex h-screen flex-col overflow-y-auto bg-[var(--bg)] text-[var(--ink)]'>
-                <PageHeader />
-                <main className='mx-auto w-full max-w-7xl px-6 py-12 md:py-16'>
-                    <LoadingManifest />
-                </main>
-                <Footer />
-            </div>
-        )
-    }
-
-    const { manifest, stats, jobAtsCards, companyAtsCards, watchlistCards, companyCards } = data
+    const stats = [
+        { label: 'jobs', value: manifest.stats.total_jobs.toLocaleString(), colorIndex: 0 },
+        { label: 'companies', value: manifest.stats.total_companies.toLocaleString(), colorIndex: 1 },
+        { label: 'ats platforms', value: String(manifest.stats.ats_count), colorIndex: 2 },
+    ]
 
     return (
         <div className='flex h-screen flex-col overflow-y-auto bg-[var(--bg)] text-[var(--ink)]'>

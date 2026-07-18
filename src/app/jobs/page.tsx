@@ -1,14 +1,22 @@
+export const dynamic = 'force-dynamic'
+
 import { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
 import { Footer } from '@/components/Footer'
 import { JobPageStatsClient } from '@/components/JobPageStatsClient'
-import { AllJobsListClient } from '@/components/JobListsClient'
+import { AllJobsList } from '@/components/AllJobsList'
+import { fetchJobsSafe } from '@/utils/jobs'
 
 export const metadata: Metadata = {
     title: 'Jobs | OpenApply',
 }
 
-export default function JobsDirectoryPage() {
+import { computeManifestStats } from '@/utils/client-manifest'
+
+export default async function JobsDirectoryPage() {
+    const jobs = await fetchJobsSafe()
+    const stats = computeManifestStats(jobs)
+
     return (
         <div className='flex h-screen flex-col overflow-y-auto bg-[var(--bg)] text-[var(--ink)]'>
             <PageHeader />
@@ -18,12 +26,12 @@ export default function JobsDirectoryPage() {
                     <h1 className='text-3xl font-semibold tracking-tight md:text-4xl'>
                         Jobs
                         <span className='ml-3 text-sm font-normal text-[var(--ink-soft)]'>
-                            <JobPageStatsClient />
+                            <JobPageStatsClient stats={stats} />
                         </span>
                     </h1>
                 </header>
 
-                <AllJobsListClient />
+                <AllJobsList jobs={jobs} />
             </main>
 
             <Footer />

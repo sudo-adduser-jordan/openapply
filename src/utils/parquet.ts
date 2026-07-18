@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ArrowTable } from '@/types'
 
-const PARQUET_BASE = 'https://github.com/sudo-adduser-jordan/openats/raw/refs/heads/dev/data/parquet'
+const PARQUET_BASE = 'https://github.com/sudo-adduser-jordan/openats/raw/refs/heads/main/data/parquet'
 
 async function fetchParquetBuffer(url: string): Promise<Uint8Array> {
     const response = await fetch(url)

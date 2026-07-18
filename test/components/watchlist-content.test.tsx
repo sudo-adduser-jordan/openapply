@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { WatchlistContent } from '@/components/WatchlistContent'
+import type { JobMarker } from '@/types'
 
-const mockLoadJobs = vi.fn()
 const mockClearAll = vi.fn()
 const mockCreateList = vi.fn()
 const mockRenameList = vi.fn()
@@ -39,19 +39,17 @@ vi.mock('@/hooks/use-saved-companies', () => ({
 
 beforeEach(() => {
     vi.clearAllMocks()
-    mockLoadJobs.mockResolvedValue([])
     mockItemsForList.mockReturnValue([])
-    global.fetch = vi.fn().mockImplementation(() =>
-        Promise.resolve({
-            ok: true,
-            json: () => mockLoadJobs().then((jobs: unknown) => ({ jobs })),
-        }),
-    )
 })
+
+const defaultProps = {
+    jobs: [] as JobMarker[],
+    watchlistCategories: [],
+}
 
 describe('WatchlistContent', () => {
     it('renders empty state when no companies', async () => {
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         await waitFor(() => {
             expect(screen.getByText('No companies in this list')).toBeInTheDocument()
         })
@@ -63,16 +61,31 @@ describe('WatchlistContent', () => {
             { name: 'Google', slug: 'google', savedAt: '2026-01-01T00:00:00Z', listId: 'default' },
             { name: 'Meta', slug: 'meta', savedAt: '2026-01-02T00:00:00Z', listId: 'default' },
         ])
-        mockLoadJobs.mockResolvedValue([
+        const mockJobs: JobMarker[] = [
             {
                 url: 'https://google.com/jobs/1',
                 title: 'Engineer',
                 location: 'Mountain View',
                 company: 'Google',
                 ats_id: 'g1',
+                posted_at: null,
+                salary_summary: null,
+                salary_currency: null,
+                salary_min: null,
+                salary_max: null,
+                salary_period: null,
+                is_remote: null,
+                ats_type: null,
                 id: '1',
-                lat: 37.4,
-                lng: -122.1,
+                experience: null,
+                department: null,
+                team: null,
+                description: null,
+                apply_url: null,
+                commitment: null,
+                country_iso: null,
+                employment_type: null,
+                requisition_id: null,
             },
             {
                 url: 'https://meta.com/jobs/1',
@@ -80,12 +93,27 @@ describe('WatchlistContent', () => {
                 location: 'Menlo Park',
                 company: 'Meta',
                 ats_id: 'm1',
+                posted_at: null,
+                salary_summary: null,
+                salary_currency: null,
+                salary_min: null,
+                salary_max: null,
+                salary_period: null,
+                is_remote: null,
+                ats_type: null,
                 id: '2',
-                lat: 37.5,
-                lng: -122.2,
+                experience: null,
+                department: null,
+                team: null,
+                description: null,
+                apply_url: null,
+                commitment: null,
+                country_iso: null,
+                employment_type: null,
+                requisition_id: null,
             },
-        ])
-        render(<WatchlistContent />)
+        ]
+        render(<WatchlistContent jobs={mockJobs} watchlistCategories={[]} />)
         await waitFor(() => {
             expect(screen.getByText('Google')).toBeInTheDocument()
         })
@@ -95,8 +123,7 @@ describe('WatchlistContent', () => {
 
     it('shows correct company count in stat line', async () => {
         mockItemsForList.mockReturnValue([{ name: 'Google', slug: 'google', savedAt: '2026-01-01T00:00:00Z', listId: 'default' }])
-        mockLoadJobs.mockResolvedValue([])
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         await waitFor(() => {
             expect(screen.getByText('1 company in')).toBeInTheDocument()
         })
@@ -104,8 +131,7 @@ describe('WatchlistContent', () => {
 
     it('calls clearAll when Clear All confirmed', async () => {
         mockItemsForList.mockReturnValue([{ name: 'Google', slug: 'google', savedAt: '2026-01-01T00:00:00Z', listId: 'default' }])
-        mockLoadJobs.mockResolvedValue([])
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         await waitFor(() => {
             const buttons = screen.getAllByText('Clear All')
             fireEvent.click(buttons[0])
@@ -116,24 +142,24 @@ describe('WatchlistContent', () => {
     })
 
     it('renders list tabs', () => {
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         expect(screen.getByText('Default')).toBeInTheDocument()
     })
 
     it('shows New List button', () => {
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         expect(screen.getByText('New List')).toBeInTheDocument()
     })
 
     it('opens create list input on New List click', () => {
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         fireEvent.click(screen.getByText('New List'))
         expect(screen.getByPlaceholderText('List name…')).toBeInTheDocument()
     })
 
     it('creates a list via inline input', () => {
         mockCreateList.mockReturnValue('new-id')
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
         fireEvent.click(screen.getByText('New List'))
         const input = screen.getByPlaceholderText('List name…')
         fireEvent.change(input, { target: { value: 'Dream Companies' } })
@@ -150,8 +176,7 @@ describe('WatchlistContent', () => {
             if (id === 'list1') return [{ name: 'Google', slug: 'google', savedAt: '', listId: 'list1' }]
             return []
         })
-        mockLoadJobs.mockResolvedValue([])
-        render(<WatchlistContent />)
+        render(<WatchlistContent {...defaultProps} />)
 
         expect(screen.getByText('Dreams')).toBeInTheDocument()
         expect(screen.getByText('Active Apps')).toBeInTheDocument()

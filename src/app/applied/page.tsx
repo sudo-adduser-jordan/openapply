@@ -1,13 +1,18 @@
+export const dynamic = 'force-dynamic'
+
 import { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
 import { Footer } from '@/components/Footer'
-import { AppliedJobsListClient } from '@/components/JobListsClient'
+import { AppliedJobsList } from '@/components/AppliedJobsList'
+import { fetchJobsSafe } from '@/utils/jobs'
 
 export const metadata: Metadata = {
     title: 'Applied Jobs | OpenApply',
 }
 
-export default function AppliedJobsPage() {
+export default async function AppliedJobsPage() {
+    const jobs = await fetchJobsSafe()
+
     return (
         <div className='flex h-screen flex-col overflow-y-auto bg-[var(--bg)] text-[var(--ink)]'>
             <PageHeader />
@@ -17,7 +22,7 @@ export default function AppliedJobsPage() {
                     <h1 className='text-3xl font-semibold tracking-tight md:text-4xl'>Applied jobs</h1>
                 </div>
 
-                <AppliedJobsListClient />
+                <AppliedJobsList jobs={jobs} />
             </main>
 
             <Footer />

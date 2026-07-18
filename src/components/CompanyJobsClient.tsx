@@ -3,19 +3,22 @@
 import { useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import { AllJobsList } from './AllJobsList'
-import { slugify } from '@/utils/format'
-import { useClientJobs, LoadingJobs } from '@/hooks/use-client-jobs'
+import type { JobMarker } from '@/types'
 
-export function CompanyJobsClient() {
+interface CompanyJobsClientProps {
+    jobs: JobMarker[]
+}
+
+export function CompanyJobsClient({ jobs }: CompanyJobsClientProps) {
     const params = useParams()
     const companySlug = params.company as string
-    const allJobs = useClientJobs()
 
     const filteredJobs = useMemo(() => {
-        if (!allJobs) return null
-        return allJobs.filter((job) => slugify(job.company) === companySlug)
-    }, [allJobs, companySlug])
+        return jobs.filter((job) => {
+            const slug = job.company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+            return slug === companySlug
+        })
+    }, [jobs, companySlug])
 
-    if (!filteredJobs) return <LoadingJobs />
     return <AllJobsList jobs={filteredJobs} hideCompanyName={true} />
 }
