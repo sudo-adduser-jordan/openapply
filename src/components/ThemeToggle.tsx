@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { SunIcon, MoonIcon } from './icons'
 
@@ -11,13 +11,12 @@ const tab = (active: boolean) =>
     )
 
 export function ThemeToggle() {
-    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-        if (typeof document !== 'undefined') {
-            const t = document.documentElement.getAttribute('data-theme')
-            if (t === 'light' || t === 'dark') return t
-        }
-        return 'dark'
-    })
+    const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+
+    useEffect(() => {
+        const t = document.documentElement.getAttribute('data-theme')
+        if (t === 'light' || t === 'dark') setTheme(t)
+    }, [])
 
     const select = useCallback(
         (next: 'light' | 'dark') => {
