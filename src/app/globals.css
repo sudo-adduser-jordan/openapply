@@ -1,0 +1,179 @@
+@import 'tailwindcss';
+@source "../";
+
+@theme {
+    /* Urbanist body + Fredoka wordmark — the OpenApply design system. */
+    --font-sans: var(--font-urbanist), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-fredoka: var(--font-fredoka), ui-sans-serif, system-ui, sans-serif;
+    /* Match the family's radius scale (rounded-md = 10px on landing/viewer). */
+    --radius-md: 10px;
+}
+
+@layer base {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+}
+
+/* OpenApply design-system tokens — dark palette (default),
+   mirroring the landing/viewer `[data-theme="dark"]` values so the chrome is
+   1:1 with the rest of the family. */
+:root,
+[data-theme='dark'] {
+    --paper: #050506;
+    --shell: #050506;
+    --paper-2: #0a0a0c;
+    --paper-3: #16171a;
+    --bg: #000000;
+    --fg: #f4f5f7;
+    --ink: #f4f5f7;
+    --ink-soft: #c4c8d0;
+    --ink-mute: #9aa1ad;
+    --ink-faint: #6b7280;
+    --muted: #9aa1ad;
+    --line: rgba(255, 255, 255, 0.1);
+    --line-strong: rgba(255, 255, 255, 0.16);
+    --brand: #3b82f6;
+    --brand-deep: #60a5fa;
+    --brand-tint: rgba(59, 130, 246, 0.14);
+    --violet: #a78bfa;
+    --violet-deep: #c4b5fd;
+    --violet-tint: rgba(139, 92, 246, 0.14);
+    --violet-solid: #7c3aed; /* deep enough for white text / fills */
+    --violet-solid-hover: #6d28d9;
+    --emerald: #34d399;
+    --emerald-deep: #6ee7b7;
+    --emerald-tint: rgba(52, 211, 153, 0.14);
+    --c-blue: #3b82f6;
+    --c-emerald: #34d399;
+    --c-amber: #f59e0b;
+    --c-violet: #a78bfa;
+    --radius-pill: 999px;
+    /* Height of the sticky PageHeader — used to offset fixed overlays (e.g. the job sheet). */
+    --header-h: 57px;
+
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light palette */
+[data-theme='light'] {
+    --paper: #ffffff;
+    --shell: #ffffff;
+    --paper-2: #f9fafb;
+    --paper-3: #f3f4f6;
+    --bg: #ffffff;
+    --fg: #111827;
+    --ink: #111827;
+    --ink-soft: #374151;
+    --ink-mute: #6b7280;
+    --ink-faint: #9ca3af;
+    --muted: #6b7280;
+    --line: rgba(0, 0, 0, 0.1);
+    --line-strong: rgba(0, 0, 0, 0.16);
+    --brand: #2563eb;
+    --brand-deep: #1d4ed8;
+    --brand-tint: rgba(37, 99, 235, 0.1);
+    --violet: #7c3aed;
+    --violet-deep: #6d28d9;
+    --violet-tint: rgba(124, 58, 237, 0.1);
+    --violet-solid: #6d28d9;
+    --violet-solid-hover: #5b21b6;
+    --emerald: #059669;
+    --emerald-deep: #047857;
+    --emerald-tint: rgba(5, 150, 105, 0.1);
+    --c-blue: #2563eb;
+    --c-emerald: #059669;
+    --c-amber: #d97706;
+    --c-violet: #7c3aed;
+    --radius-pill: 999px;
+    --header-h: 57px;
+
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header/footer chrome always uses Fredoka 400 (matches landing/viewer). */
+.lab-header {
+    font-family: var(--font-fredoka), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    /* overflow: hidden; */
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family:
+        var(--font-urbanist),
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100vh;
+    scroll-behavior: smooth;
+}
+
+/* Page-level scroll containers — smooth scrolling for all pages */
+.flex.h-screen.flex-col.overflow-y-auto {
+    scroll-behavior: smooth;
+}
+
+/* Landing page pill badges */
+.lab-pill-ink {
+    background-color: var(--ink);
+    color: var(--bg);
+}
+
+.lab-pill-paper {
+    background-color: var(--paper-3);
+}
+
+/* Custom animations */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.3;
+    }
+}
+
+/* Markdown content styling */
+.markdown-content > *:last-child {
+    margin-bottom: 0 !important;
+}
