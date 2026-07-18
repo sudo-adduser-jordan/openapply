@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isRemoteJob, matchesExperienceLevel } from '@/utils/search'
+import { isRemoteJob, matchesExperienceLevel } from '@/utils/job-filters'
 import { EMPTY_FILTERS, countActiveFilters } from '@/components/FilterDialog'
 import type { JobMarker } from '@/types'
 

@@ -1,54 +1,28 @@
 'use client'
 
 import { useState, useMemo, useEffect, useTransition, useRef, useCallback } from 'react'
-import Link from 'next/link'
 import { useQueryState, parseAsInteger, parseAsString, parseAsBoolean, parseAsArrayOf } from 'nuqs'
-import clsx from 'clsx'
-import { formatExperience, formatSalary } from '@/utils/format'
-import { formatJobDate } from '@/utils/format'
-import { SaveJobButton } from '@/components/SaveJobButton'
-import { AppliedJobButton } from '@/components/AppliedJobButton'
-import { addUtmParams } from '@/utils/format'
-import { getCountry } from '@/utils/format'
-import { fuzzyMatch } from '@/utils/search'
+import { getSalaryValue } from '@/utils/format'
+import { fuzzyMatch } from '@/utils/fuzzy-match'
 import { SearchField } from './SearchField'
 import { FilterDialog, type FilterState } from './FilterDialog'
 import { FilterChips } from './FilterChips'
+import { Pagination } from './Pagination'
+import { JobItemRow } from './JobItemRow'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
 import type { JobMarker } from '@/types'
 import { ExperienceLevel } from '@/types'
-import { isRemoteJob } from '@/utils/search'
-import { matchesExperienceLevel } from '@/utils/search'
-import { getSalaryValue } from '@/utils/format'
+import { isRemoteJob } from '@/utils/job-filters'
+import { matchesExperienceLevel } from '@/utils/job-filters'
 import { EmptyStateNoResults } from './EmptyStateNoResults'
 import { useSyncedSearchParam } from '@/hooks/use-synced-search-param'
-import { FilterIcon, MapPinIcon, ExternalLinkIcon, ChevronLeftIcon, ChevronRightIcon } from './icons'
+import { FilterIcon } from './icons'
 
 type Job = JobMarker
 
 const PAGE_SIZE = 50
 
-const pageBtn = (active: boolean) =>
-    clsx(
-        'inline-flex h-8 min-w-[32px] cursor-pointer items-center justify-center rounded-md px-2 text-[13px] font-medium transition-colors',
-        active
-            ? 'bg-[var(--violet-tint)] text-[var(--violet-deep)]'
-            : 'text-[var(--ink-soft)] hover:bg-[var(--paper-3)] hover:text-[var(--ink)]',
-    )
 
-function buildPageList(current: number, total: number): (number | '…')[] {
-    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
-    const wanted = new Set<number>([1, total, current, current - 1, current + 1])
-    const sorted = [...wanted].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b)
-    const out: (number | '…')[] = []
-    let prev = 0
-    for (const p of sorted) {
-        if (p - prev > 1) out.push('…')
-        out.push(p)
-        prev = p
-    }
-    return out
-}
 
 type SortOption = 'location' | 'title' | 'company' | 'recent' | 'experience' | 'salary'
 
@@ -571,153 +545,23 @@ export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps)
                 ) : processedJobs.length === 0 ? (
                     <EmptyStateNoResults title='No jobs found' subtitle='Try adjusting your search or filters' />
                 ) : (
-                    pageJobs.map((job, i) => {
-                        const uniqueKey = `${job.ats_id || job.id || 'unknown'}-${(currentPage - 1) * PAGE_SIZE + i}`
-                        const formattedDate = formatJobDate(job)
-                        const salary = formatSalary(job)
-                        const experience = formatExperience(job.experience)
-                        const compIncluded = companies.includes(job.company)
-                        const compExcluded = excludeCompanies.includes(job.company)
-
-                        return (
-                            <div
-                                key={uniqueKey}
-                                className='group flex items-center justify-between gap-3 border-b border-dotted border-[var(--line-strong)] px-3.5 py-2.5 transition-colors last:border-b-0 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
-                            >
-                                <div className='min-w-0 flex-1'>
-                                    <div className='flex items-center gap-2'>
-                                        <a
-                                            href={addUtmParams(job.url)}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            className='truncate text-[15px] font-medium leading-tight text-[var(--ink)] no-underline transition-colors group-hover:text-[var(--violet-deep)]'
-                                        >
-                                            {job.title}
-                                        </a>
-                                        {experience && <span className='shrink-0 text-[11px] text-[var(--ink-mute)]'>{experience}</span>}
-                                    </div>
-                                    <div className='mt-0.5 flex min-w-0 items-center gap-1.5 text-[12.5px] text-[var(--ink-mute)]'>
-                                        {!hideCompanyName && (
-                                            <span className='contents max-sm:hidden'>
-                                                <Link
-                                                    href={`/jobs?companies=${encodeURIComponent(job.company)}`}
-                                                    className='shrink-0 font-medium uppercase tracking-wide no-underline transition-colors hover:text-[var(--violet-deep)]'
-                                                >
-                                                    {job.company}
-                                                </Link>
-                                                <button
-                                                    type='button'
-                                                    onClick={(e) => {
-                                                        e.preventDefault()
-                                                        e.stopPropagation()
-                                                        cycleCompany(job.company)
-                                                    }}
-                                                    title={
-                                                        compIncluded
-                                                            ? 'Including this company — click to exclude'
-                                                            : compExcluded
-                                                              ? 'Excluding this company — click to clear'
-                                                              : 'Include this company in the filters'
-                                                    }
-                                                    aria-label='Include or exclude this company'
-                                                    className={clsx(
-                                                        'grid size-4 shrink-0 place-items-center rounded-[4px] border text-[11px] font-semibold leading-none transition-colors',
-                                                        compIncluded
-                                                            ? 'border-[var(--violet-solid)] bg-[var(--violet-solid)] text-white'
-                                                            : compExcluded
-                                                              ? 'border-[#ef4444] bg-[#ef4444] text-white'
-                                                              : 'border-[var(--line-strong)] text-[var(--ink-mute)] opacity-0 hover:text-[var(--ink)] group-hover:opacity-100',
-                                                    )}
-                                                >
-                                                    {compIncluded ? '✓' : compExcluded ? '−' : '+'}
-                                                </button>
-                                                <span className='opacity-40'>·</span>
-                                            </span>
-                                        )}
-                                        <span className='flex min-w-0 items-center gap-1 text-[var(--ink-soft)]'>
-                                        <MapPinIcon width={10} height={10} className='shrink-0' />
-                                            <span className='truncate max-sm:hidden'>{job.location}</span>
-                                            <span className='truncate sm:hidden'>{getCountry(job.location)}</span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className='flex shrink-0 items-center gap-2'>
-                                    {salary && (
-                                        <span className='hidden text-[12.5px] font-medium text-[var(--emerald)] sm:inline'>{salary}</span>
-                                    )}
-                                    {formattedDate && (
-                                        <span
-                                            className={clsx(
-                                                'rounded-[var(--radius-pill)] px-[6px] py-0.5 text-[10px] font-medium',
-                                                formattedDate === 'New'
-                                                    ? 'bg-[var(--brand-tint)] text-[var(--brand-deep)]'
-                                                    : 'bg-[var(--paper-3)] text-[var(--ink-soft)]',
-                                            )}
-                                        >
-                                            {formattedDate}
-                                        </span>
-                                    )}
-                                    <div className='flex items-center gap-0.5 opacity-80 transition-opacity group-hover:opacity-100'>
-                                        <a
-                                            href={addUtmParams(job.url)}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            aria-label='Open job posting'
-                                            className='grid size-6 place-items-center rounded-md text-[var(--ink-mute)] transition-colors hover:bg-[var(--paper-3)] hover:text-[var(--ink)]'
-                                        >
-                                            <ExternalLinkIcon width={12} height={12} />
-                                        </a>
-                                        <AppliedJobButton atsId={job.ats_id} name={job.title} company={job.company} variant='icon' />
-                                        <SaveJobButton atsId={job.ats_id} name={job.title} company={job.company} variant='icon' />
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })
+                    pageJobs.map((job, i) => (
+                        <JobItemRow
+                            key={`${job.ats_id || job.id || 'unknown'}-${(currentPage - 1) * PAGE_SIZE + i}`}
+                            job={job}
+                            index={i}
+                            currentPage={currentPage}
+                            pageSize={PAGE_SIZE}
+                            companies={companies}
+                            excludeCompanies={excludeCompanies}
+                            hideCompanyName={hideCompanyName}
+                            onCycleCompany={cycleCompany}
+                        />
+                    ))
                 )}
             </div>
 
-            {/* Pagination */}
-            {!isPending && totalPages > 1 && (
-                <nav className='flex flex-wrap items-center justify-center gap-1.5 pt-1' aria-label='Pagination'>
-                    <button
-                        type='button'
-                        onClick={() => goToPage(currentPage - 1)}
-                        disabled={currentPage <= 1}
-                        className='inline-flex h-8 cursor-pointer items-center gap-1 rounded-md pl-1.5 pr-2.5 text-[13px] font-medium text-[var(--ink-soft)] transition-colors hover:bg-[var(--paper-3)] hover:text-[var(--ink)] disabled:cursor-not-allowed disabled:opacity-40'
-                    >
-                        <ChevronLeftIcon width={15} height={15} />
-                        Prev
-                    </button>
-                    {buildPageList(currentPage, totalPages).map((p, idx) =>
-                        p === '…' ? (
-                            <span key={`ellipsis-${idx}`} className='px-1 text-[13px] text-[var(--ink-faint)]'>
-                                …
-                            </span>
-                        ) : (
-                            <button
-                                key={p}
-                                type='button'
-                                onClick={() => goToPage(p)}
-                                className={pageBtn(p === currentPage)}
-                                aria-current={p === currentPage ? 'page' : undefined}
-                            >
-                                {p}
-                            </button>
-                        ),
-                    )}
-                    <button
-                        type='button'
-                        onClick={() => goToPage(currentPage + 1)}
-                        disabled={currentPage >= totalPages}
-                        className='inline-flex h-8 cursor-pointer items-center gap-1 rounded-md pl-2.5 pr-1.5 text-[13px] font-medium text-[var(--ink-soft)] transition-colors hover:bg-[var(--paper-3)] hover:text-[var(--ink)] disabled:cursor-not-allowed disabled:opacity-40'
-                    >
-                        Next
-                        <ChevronRightIcon width={15} height={15} />
-                    </button>
-                </nav>
-            )}
+            {!isPending && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={goToPage} />}
 
             <FilterDialog
                 isOpen={filterOpen}

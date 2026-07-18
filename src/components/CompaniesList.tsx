@@ -1,15 +1,13 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import Link from 'next/link'
 import { useQueryState } from 'nuqs'
 import clsx from 'clsx'
-import { fuzzyMatch } from '@/utils/search'
-import { generateCompanySlug } from '@/utils/format'
+import { fuzzyMatch } from '@/utils/fuzzy-match'
 import type { CompanyWithMetadata } from '@/types'
+import { CompanyCard } from './CompanyCard'
 import { SearchField } from './SearchField'
 import { FilterChips } from './FilterChips'
-import { SaveCompanyButton } from './SaveCompanyButton'
 import { EmptyStateNoResults } from './EmptyStateNoResults'
 import { useSyncedSearchParam } from '@/hooks/use-synced-search-param'
 import { XIcon, FilterIcon } from './icons'
@@ -138,51 +136,34 @@ export function CompaniesList({ companies }: CompaniesListProps) {
     const someFilterActive = !!(debouncedSearchText?.trim() || hasActiveFilters)
 
     const filteredCompanies = useMemo(() => {
-        let result = companies
+        const filters: ((c: CompanyWithMetadata) => boolean)[] = []
 
-        // Text search (fuzzy company name)
         if (debouncedSearchText?.trim()) {
-            const searchLower = debouncedSearchText.toLowerCase()
-            result = result.filter((c) => fuzzyMatch(c.name, searchLower, 0.75))
+            const q = debouncedSearchText.toLowerCase()
+            filters.push((c) => fuzzyMatch(c.name, q, 0.75))
         }
-
-        // Remote only
-        if (remote) {
-            result = result.filter((c) => c.hasRemoteJobs)
-        }
-
-        // Has salary
-        if (salary) {
-            result = result.filter((c) => c.hasSalary)
-        }
-
-        // Posted within
+        if (remote) filters.push((c) => c.hasRemoteJobs)
+        if (salary) filters.push((c) => c.hasSalary)
         if (freshCutoff > 0) {
-            result = result.filter((c) => {
+            filters.push((c) => {
                 if (!c.latestPostedAt) return false
                 return new Date(c.latestPostedAt).getTime() >= freshCutoff
             })
         }
-
-        // Location
         if (debouncedLoc?.trim()) {
             const q = debouncedLoc.toLowerCase()
-            result = result.filter((c) => c.locations.some((l) => l.toLowerCase().includes(q)))
+            filters.push((c) => c.locations.some((l) => l.toLowerCase().includes(q)))
         }
-
-        // Department
         if (debouncedDept?.trim()) {
             const q = debouncedDept.toLowerCase()
-            result = result.filter((c) => c.departments.some((d) => d.toLowerCase().includes(q)))
+            filters.push((c) => c.departments.some((d) => d.toLowerCase().includes(q)))
         }
-
-        // Team
         if (debouncedTeam?.trim()) {
             const q = debouncedTeam.toLowerCase()
-            result = result.filter((c) => c.teams.some((t) => t.toLowerCase().includes(q)))
+            filters.push((c) => c.teams.some((t) => t.toLowerCase().includes(q)))
         }
 
-        return result
+        return filters.length > 0 ? companies.filter((c) => filters.every((fn) => fn(c))) : companies
     }, [companies, debouncedSearchText, remote, salary, freshCutoff, debouncedLoc, debouncedDept, debouncedTeam])
 
     const displayCompanies = someFilterActive ? filteredCompanies : filteredCompanies.slice(0, visibleCount)
@@ -303,33 +284,7 @@ export function CompaniesList({ companies }: CompaniesListProps) {
                 <div className='overflow-hidden'>
                     <div className='-mb-px -mr-px grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
                         {displayCompanies.map(({ name, jobCount, hasNewJobs }) => (
-                            <Link
-                                key={name}
-                                href={`/jobs?companies=${encodeURIComponent(name)}`}
-                                className='group border-b border-r border-dotted border-[var(--line-strong)] p-4 no-underline transition-colors hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
-                            >
-                                <div className='mt-2 flex items-center justify-between gap-3'>
-                                    <h3 className='truncate text-[15px] font-semibold uppercase leading-tight tracking-tight text-[var(--ink)]'>
-                                        {name}
-                                    </h3>
-                                    <span className='text-[11px] font-medium text-[var(--ink-mute)] transition-colors group-hover:text-[var(--violet-deep)]'>
-                                        <SaveCompanyButton name={name} slug={generateCompanySlug(name)} variant='icon' />
-                                    </span>
-                                </div>
-                                <div className='mt-2 flex items-center justify-between gap-3'>
-                                    <span className='flex items-center gap-2 text-[12px] font-medium text-[var(--ink-mute)]'>
-                                        {hasNewJobs && (
-                                            <span className='rounded-[var(--radius-pill)] bg-[var(--brand-tint)] px-[6px] py-0.5 text-[10px] font-medium text-[var(--brand-deep)]'>
-                                                New
-                                            </span>
-                                        )}
-                                        {jobCount.toLocaleString()} {jobCount === 1 ? 'opening' : 'openings'}
-                                    </span>
-                                    <span className='text-[11px] font-medium text-[var(--ink-mute)] transition-colors group-hover:text-[var(--violet-deep)]'>
-                                        View →
-                                    </span>
-                                </div>
-                            </Link>
+                            <CompanyCard key={name} name={name} jobCount={jobCount} hasNewJobs={hasNewJobs} />
                         ))}
                     </div>
 

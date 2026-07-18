@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
 import clsx from 'clsx'
-import { ListNameInput } from '@/components/ListNameInput'
-import { ChevronDownIcon, StarIcon, PlusIcon } from './icons'
+import { ListPopover } from '@/components/ListPopover'
+import { ChevronDownIcon, StarIcon } from './icons'
 
 interface SaveCompanyButtonProps {
     name: string
@@ -82,6 +82,32 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
         <ChevronDownIcon width={8} height={8} className={extraClass} />
     )
 
+    const dropdownSection = (buttonClassName: string) => (
+        <>
+            {
+                <button onClick={handleDropdownClick} className={buttonClassName} aria-label='Select watchlist'>
+                    {makeDropdownIcon()}
+                </button>
+            }
+            {popoverOpen && (
+                <ListPopover
+                    popoverRef={popoverRef}
+                    watchlists={watchlists}
+                    isInList={isInList}
+                    name={name}
+                    activeListId={activeListId}
+                    creating={creating}
+                    newListName={newListName}
+                    setNewListName={setNewListName}
+                    handleListToggle={handleListToggle}
+                    handleCreateList={handleCreateList}
+                    setCreating={setCreating}
+                    onClose={() => setPopoverOpen(false)}
+                />
+            )}
+        </>
+    )
+
     if (variant === 'icon') {
         return (
             <div className='relative inline-flex items-center'>
@@ -109,16 +135,7 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                         strokeLinejoin='round'
                     />
                 </button>
-                {
-                    <button
-                        onClick={handleDropdownClick}
-                        className='ml-px p-0.5 text-[var(--ink-faint)] hover:text-[var(--ink-soft)] transition-colors'
-                        aria-label='Select watchlist'
-                    >
-                        {makeDropdownIcon()}
-                    </button>
-                }
-                {popoverOpen && <ListPopover />}
+                {dropdownSection('ml-px p-0.5 text-[var(--ink-faint)] hover:text-[var(--ink-soft)] transition-colors')}
             </div>
         )
     }
@@ -149,22 +166,13 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                     />
                     {isSaved(name) ? (displayInActiveList ? 'Watching' : 'Watched') : 'Watch'}
                 </button>
-                {
-                    <button
-                        onClick={handleDropdownClick}
-                        className={clsx(
-                            'inline-flex items-center px-1.5 py-1.5 rounded-r-full text-[12px] font-medium',
-                            'border transition-[border-color,background-color] duration-200 ease-in-out',
-                            displayInActiveList
-                                ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30'
-                                : 'bg-[color-mix(in_oklab,var(--fg)_8%,transparent)] text-[var(--ink-mute)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_12%,transparent)]',
-                        )}
-                        aria-label='Select watchlist'
-                    >
-                        {makeDropdownIcon()}
-                    </button>
-                }
-                {popoverOpen && <ListPopover />}
+                {dropdownSection(clsx(
+                    'inline-flex items-center px-1.5 py-1.5 rounded-r-full text-[12px] font-medium',
+                    'border transition-[border-color,background-color] duration-200 ease-in-out',
+                    displayInActiveList
+                        ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30'
+                        : 'bg-[color-mix(in_oklab,var(--fg)_8%,transparent)] text-[var(--ink-mute)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_12%,transparent)]',
+                ))}
             </div>
         )
     }
@@ -196,110 +204,13 @@ export function SaveCompanyButton({ name, slug, variant = 'compact', className }
                     />
                 {isSaved(name) ? (displayInActiveList ? 'Watching' : 'Watched') : 'Watch'}
             </button>
-            {
-                <button
-                    onClick={handleDropdownClick}
-                    className={clsx(
-                        'inline-flex items-center px-1 py-0.5 rounded-r-full text-[11px] md:text-[12px] font-medium',
-                        'border transition-[border-color,background-color] duration-200 ease-in-out',
-                        displayInActiveList
-                            ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30'
-                            : 'bg-[color-mix(in_oklab,var(--fg)_8%,transparent)] text-[var(--ink-mute)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_12%,transparent)]',
-                    )}
-                    aria-label='Select watchlist'
-                >
-                    {makeDropdownIcon()}
-                </button>
-            }
-            {popoverOpen && <ListPopover />}
+            {dropdownSection(clsx(
+                'inline-flex items-center px-1 py-0.5 rounded-r-full text-[11px] md:text-[12px] font-medium',
+                'border transition-[border-color,background-color] duration-200 ease-in-out',
+                displayInActiveList
+                    ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30'
+                    : 'bg-[color-mix(in_oklab,var(--fg)_8%,transparent)] text-[var(--ink-mute)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_12%,transparent)]',
+            ))}
         </div>
     )
-
-    function ListPopover() {
-        return (
-            <div
-                ref={popoverRef}
-                className='absolute right-0 top-full z-50 mt-1.5 min-w-[200px] rounded-xl border border-[var(--line)] bg-[var(--paper-3)] shadow-xl'
-            >
-                <div className='px-3 py-2 text-[11px] font-medium text-[var(--ink-mute)] uppercase tracking-wider'>Watchlists</div>
-                <div className='max-h-[200px] overflow-y-auto'>
-                    {watchlists.map((list) => {
-                        const inList = isInList(name, list.id)
-                        return (
-                            <button
-                                key={list.id}
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    e.stopPropagation()
-                                    handleListToggle(list.id)
-                                }}
-                                className='flex w-full items-center gap-2 px-3 py-1.5 text-left text-[13px] text-[var(--ink)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)] transition-colors'
-                            >
-                                <StarIcon
-                                    width={12}
-                                    height={12}
-                                    fill={inList ? 'currentColor' : 'none'}
-                                    stroke='currentColor'
-                                    strokeWidth={2}
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    className={clsx('shrink-0', inList ? 'text-blue-400' : 'text-[var(--ink-mute)]')}
-                                />
-                                <span className='flex-1 truncate'>{list.name}</span>
-                                {list.id === activeListId && <span className='text-[10px] text-[var(--ink-mute)]'>Active</span>}
-                            </button>
-                        )
-                    })}
-                </div>
-                {creating ? (
-                    <div className='border-t border-[var(--line)] px-3 py-2'>
-                        <ListNameInput
-                            value={newListName}
-                            onChange={setNewListName}
-                            onCreate={handleCreateList}
-                            onCancel={() => { setCreating(false); setNewListName('') }}
-                            autoFocus
-                            className='w-full rounded-md border border-[var(--line)] bg-[var(--bg)] px-2 py-1 text-[12px] text-[var(--ink)] placeholder:text-[var(--ink-mute)] outline-none focus:border-blue-400/50'
-                        />
-                        <div className='mt-1.5 flex gap-1.5 justify-end'>
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    e.stopPropagation()
-                                    setCreating(false)
-                                    setNewListName('')
-                                }}
-                                className='px-2 py-0.5 text-[11px] text-[var(--ink-mute)] hover:text-[var(--ink)] rounded-md transition-colors'
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    e.stopPropagation()
-                                    handleCreateList()
-                                }}
-                                disabled={!newListName.trim()}
-                                className='px-2 py-0.5 text-[11px] font-medium text-white bg-blue-500/60 hover:bg-blue-500/80 rounded-md transition-colors disabled:opacity-40'
-                            >
-                                Create
-                            </button>
-                        </div>
-                    </div>
-                ) : (
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            setCreating(true)
-                        }}
-                        className='flex w-full items-center gap-2 border-t border-[var(--line)] px-3 py-2 text-[12px] text-[var(--ink-mute)] hover:text-[var(--ink)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)] transition-colors rounded-b-xl'
-                    >
-                    <PlusIcon width={12} height={12} />
-                        New List
-                    </button>
-                )}
-            </div>
-        )
-    }
 }

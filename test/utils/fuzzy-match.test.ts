@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { fuzzyMatch } from '@/utils/search'
+import { fuzzyMatch } from '@/utils/fuzzy-match'
 
 describe('fuzzyMatch', () => {
     it('returns true for exact match', () => {
