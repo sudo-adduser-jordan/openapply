@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
+import { ClearAllConfirm } from '@/components/ClearAllConfirm'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
 import { SaveCompanyButton } from '@/components/SaveCompanyButton'
-import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { useClientJobs } from '@/hooks/use-client-jobs'
 import { generateCompanySlug } from '@/utils/format'
 import type { JobMarker, WatchlistItem } from '@/types'
@@ -67,7 +67,6 @@ export function WatchlistContent() {
     const [renamingListId, setRenamingListId] = useState<string | null>(null)
     const [renameValue, setRenameValue] = useState('')
     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
-    const [confirmClear, setConfirmClear] = useState(false)
     const createInputRef = useRef<HTMLInputElement>(null)
     const renameInputRef = useRef<HTMLInputElement>(null)
 
@@ -388,24 +387,7 @@ export function WatchlistContent() {
                         {activeItems.length} compan{activeItems.length === 1 ? 'y' : 'ies'} in{' '}
                         <span className='font-medium text-[var(--ink)]'>{activeList?.name ?? 'Default'}</span>
                     </div>
-                    <div className='relative'>
-                        <button
-                            onClick={() => setConfirmClear(true)}
-                            className='text-[11px] text-red-400/80 hover:text-red-400 transition-colors font-medium'
-                        >
-                            Clear All
-                        </button>
-                        <ConfirmDialog
-                            open={confirmClear}
-                            onConfirm={() => {
-                                clearAll()
-                                setConfirmClear(false)
-                            }}
-                            onCancel={() => setConfirmClear(false)}
-                            message='Clear all companies from all lists?'
-                            confirmLabel='Clear All'
-                        />
-                    </div>
+                    <ClearAllConfirm message='Clear all companies from all lists?' onClear={clearAll} />
                 </div>
             )}
 

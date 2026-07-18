@@ -25,6 +25,11 @@ function levenshteinDistance(str1: string, str2: string): number {
     return matrix[len1][len2]
 }
 
+function isFuzzyMatch(word: string, target: string, threshold: number): boolean {
+    const lengthRatio = Math.min(word.length, target.length) / Math.max(word.length, target.length)
+    return lengthRatio >= 0.5 && similarityRatio(target, word) >= threshold
+}
+
 function similarityRatio(str1: string, str2: string): number {
     const maxLen = Math.max(str1.length, str2.length)
     if (maxLen === 0) return 1
@@ -73,11 +78,8 @@ export function fuzzyMatch(text: string, query: string, threshold: number = 0.6)
                 return true
             }
 
-            const lengthRatio = Math.min(queryWord.length, textWord.length) / Math.max(queryWord.length, textWord.length)
-            if (lengthRatio >= 0.5) {
-                if (similarityRatio(textWord, queryWord) >= threshold) {
-                    return true
-                }
+            if (isFuzzyMatch(queryWord, textWord, threshold)) {
+                return true
             }
         }
         return false
@@ -98,11 +100,8 @@ export function fuzzyMatch(text: string, query: string, threshold: number = 0.6)
         }
 
         for (const textWord of textWords) {
-            const lengthRatio = Math.min(queryWord.length, textWord.length) / Math.max(queryWord.length, textWord.length)
-            if (lengthRatio >= 0.5) {
-                if (similarityRatio(textWord, queryWord) >= threshold) {
-                    return true
-                }
+            if (isFuzzyMatch(queryWord, textWord, threshold)) {
+                return true
             }
         }
         return false

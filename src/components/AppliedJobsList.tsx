@@ -1,24 +1,21 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import Link from 'next/link'
-import clsx from 'clsx'
 import { useApplied } from '@/hooks/use-applied'
 import { AppliedJobButton } from '@/components/AppliedJobButton'
 import { UnavailableJobCard } from '@/components/UnavailableJobCard'
-import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { formatAppliedDate, formatAppliedInputDate, toIsoFromDateInput } from '@/utils/format'
-import { formatJobDate, getJobDate } from '@/utils/format'
-import { formatExperience, formatSalary } from '@/utils/format'
+import { getJobDate } from '@/utils/format'
 import { useDebounce } from '@/hooks/use-debounce'
-import { addUtmParams } from '@/utils/format'
 import { matchesSearchTerm } from '@/utils/search'
 import type { JobMarker } from '@/types'
 import { JobListSkeleton } from './JobListSkeleton'
 import { JobListSearchSort } from './JobListSearchSort'
 import { EmptyStateNoItems } from './EmptyStateNoItems'
 import { EmptyStateNoResults } from './EmptyStateNoResults'
-import { Checkmark, MapPinIcon, ExternalLinkIcon } from './icons'
+import { JobListItem } from './JobListItem'
+import { ClearAllConfirm } from './ClearAllConfirm'
+import { Checkmark } from './icons'
 
 type SortOption = 'applied' | 'title' | 'company' | 'location' | 'recent'
 
@@ -29,7 +26,6 @@ interface AppliedJobsListProps {
 export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
     const { appliedIds, applied, unmarkApplied, updateAppliedDate, clearAll, isLoading } = useApplied()
     const [searchText, setSearchText] = useState('')
-    const [confirmClear, setConfirmClear] = useState(false)
     const debouncedSearchText = useDebounce(searchText, 300)
     const [sortBy, setSortBy] = useState<SortOption>('applied')
     const [editingJobId, setEditingJobId] = useState<string | null>(null)
@@ -109,24 +105,7 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                     <div className='text-[13px] text-[var(--ink-mute)]'>
                         {totalAppliedCount} applied job{totalAppliedCount === 1 ? '' : 's'}
                     </div>
-                    <div className='relative'>
-                        <button
-                            onClick={() => setConfirmClear(true)}
-                            className='text-[11px] text-red-400/80 hover:text-red-400 transition-colors font-medium'
-                        >
-                            Clear All
-                        </button>
-                        <ConfirmDialog
-                            open={confirmClear}
-                            onConfirm={() => {
-                                clearAll()
-                                setConfirmClear(false)
-                            }}
-                            onCancel={() => setConfirmClear(false)}
-                            message='Clear all applied jobs?'
-                            confirmLabel='Clear All'
-                        />
-                    </div>
+                    <ClearAllConfirm message='Clear all applied jobs?' onClear={clearAll} />
                 </div>
             )}
 
@@ -163,42 +142,16 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                         {processedJobs.length > 0 && (
                             <div className='divide-y divide-white/5'>
                                 {processedJobs.map((job, index) => {
-                                    const uniqueKey = job.ats_id || `${job.company}-${job.title}-${index}`
                                     const appliedAt = appliedJobsMap.get(job.ats_id)?.applied_at
                                     const appliedDate = formatAppliedDate(appliedAt)
                                     const isEditing = editingJobId === job.ats_id
 
                                     return (
-                                        <div key={uniqueKey} className='pr-4 pt-2.5 pb-2.5'>
-                                            <div className='flex items-start justify-between gap-3 mb-1'>
-                                                <div className='flex items-center gap-2 flex-1 min-w-0'>
-                                                    <a
-                                                        href={addUtmParams(job.url)}
-                                                        target='_blank'
-                                                        rel='noopener noreferrer'
-                                                        className='text-[14px] md:text-[16px] font-medium text-[var(--ink)] leading-normal m-0 no-underline hover:text-[var(--ink-soft)] transition-colors'
-                                                    >
-                                                        {job.title}
-                                                    </a>
-                                                    {formatExperience(job.experience) && (
-                                                        <span className='text-[12px] md:text-[13px] text-[var(--ink-faint)] shrink-0'>
-                                                            {formatExperience(job.experience)}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <div className='flex items-center gap-1.5 shrink-0'>
-                                                    {formatJobDate(job) && (
-                                                        <span
-                                                            className={clsx(
-                                                                'text-[10px] md:text-[11px] font-medium rounded-full px-[6px] py-0.5 border',
-                                                                formatJobDate(job) === 'New'
-                                                                    ? 'bg-[var(--brand-tint)] text-[var(--brand-deep)] border-[var(--brand-tint)]'
-                                                                    : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)]',
-                                                            )}
-                                                        >
-                                                            {formatJobDate(job)}
-                                                        </span>
-                                                    )}
+                                        <JobListItem
+                                            key={job.ats_id || `${job.company}-${job.title}-${index}`}
+                                            job={job}
+                                            actions={
+                                                <>
                                                     {appliedDate && !isEditing && (
                                                         <span className='text-[10px] md:text-[11px] font-medium rounded-full px-[6px] py-0.5 border bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)]'>
                                                             Applied {appliedDate}
@@ -210,34 +163,10 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                                         company={job.company}
                                                         variant='icon'
                                                     />
-                                                </div>
-                                            </div>
-
-                                            <div className='text-[13px] md:text-[15px] text-[var(--ink-soft)] mb-1.5'>
-                                                <span className='uppercase'>{job.company}</span>
-                                            </div>
-
-                                            <div className='flex items-center gap-2 text-[13px] md:text-[15px] text-[var(--ink-mute)] mb-2 flex-wrap'>
-                                                <div className='flex items-center gap-1'>
-                                                    <MapPinIcon width={12} height={12} className='md:w-[14px] md:h-[14px]' />
-                                                    {job.location}
-                                                </div>
-                                                {formatSalary(job) && (
-                                                    <span className='text-[var(--emerald)] font-medium'>{formatSalary(job)}</span>
-                                                )}
-                                            </div>
-
-                                            <div className='flex items-center gap-2 flex-wrap'>
-                                                <Link
-                                                    href={addUtmParams(job.url)}
-                                                    target='_blank'
-                                                    rel='noopener noreferrer'
-                                                    className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] no-underline rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
-                                                >
-                                                    View Job
-                                                    <ExternalLinkIcon width={10} height={10} className='md:w-[11px] md:h-[11px]' />
-                                                </Link>
-                                                {!isEditing ? (
+                                                </>
+                                            }
+                                            bottomActions={
+                                                !isEditing ? (
                                                     <>
                                                         <button
                                                             onClick={() => {
@@ -282,9 +211,9 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                                             Cancel
                                                         </button>
                                                     </div>
-                                                )}
-                                            </div>
-                                        </div>
+                                                )
+                                            }
+                                        />
                                     )
                                 })}
                             </div>

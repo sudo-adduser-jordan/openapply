@@ -127,6 +127,16 @@ function formatNumberAsKDecimal(num: number): string {
     return rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(1)
 }
 
+function resolveCurrencySymbol(prefix: string): string {
+    if (prefix.startsWith('$')) return '$'
+    if (prefix.startsWith('€')) return '€'
+    if (prefix.startsWith('£')) return '£'
+    if (prefix.startsWith('¥')) return '¥'
+    if (prefix.startsWith('₹')) return '₹'
+    if (prefix) return getCurrencySymbol(prefix)
+    return '$'
+}
+
 function formatSingleSalary(salarySummary: string): string | null {
     const singleMatch = salarySummary.match(/^([$€£¥₹]|USD|EUR|GBP|JPY|CAD|AUD|CHF|CNY|INR\s*)?([\d,]+)$/i)
 
@@ -137,20 +147,7 @@ function formatSingleSalary(salarySummary: string): string | null {
         const amount = parseFloat(numberStr)
 
         if (!isNaN(amount) && amount > 0) {
-            let currencySymbol = '$'
-            if (currencyPrefix.startsWith('$')) {
-                currencySymbol = '$'
-            } else if (currencyPrefix.startsWith('€')) {
-                currencySymbol = '€'
-            } else if (currencyPrefix.startsWith('£')) {
-                currencySymbol = '£'
-            } else if (currencyPrefix.startsWith('¥')) {
-                currencySymbol = '¥'
-            } else if (currencyPrefix.startsWith('₹')) {
-                currencySymbol = '₹'
-            } else if (currencyPrefix) {
-                currencySymbol = getCurrencySymbol(currencyPrefix)
-            }
+            const currencySymbol = resolveCurrencySymbol(currencyPrefix)
 
             const formatted = formatNumberAsK(amount)
             return `${currencySymbol}${formatted}K`
@@ -190,20 +187,7 @@ function formatSalaryRange(salarySummary: string): string | null {
         const max = parseFloat(maxStr)
 
         if (!isNaN(min) && !isNaN(max)) {
-            let currencySymbol = '$'
-            if (currencyPrefix.startsWith('$')) {
-                currencySymbol = '$'
-            } else if (currencyPrefix.startsWith('€')) {
-                currencySymbol = '€'
-            } else if (currencyPrefix.startsWith('£')) {
-                currencySymbol = '£'
-            } else if (currencyPrefix.startsWith('¥')) {
-                currencySymbol = '¥'
-            } else if (currencyPrefix.startsWith('₹')) {
-                currencySymbol = '₹'
-            } else if (currencyPrefix) {
-                currencySymbol = getCurrencySymbol(currencyPrefix)
-            }
+            const currencySymbol = resolveCurrencySymbol(currencyPrefix)
 
             const formattedMin = formatNumberAsKDecimal(min)
             const formattedMax = formatNumberAsKDecimal(max)
