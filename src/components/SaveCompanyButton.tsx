@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from 'react'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
 import clsx from 'clsx'
 import { ListPopover } from '@/components/ListPopover'
@@ -16,15 +16,16 @@ interface SaveCompanyButtonProps {
 export function SaveCompanyButton({ name, slug, variant = 'compact', className }: SaveCompanyButtonProps) {
     const { isSaved, toggleSave, watchlists, activeListId, createList, isInList, addToList, removeFromList } = useSavedCompanies()
 
-    const [hydrated, setHydrated] = useState(false)
     const [popoverOpen, setPopoverOpen] = useState(false)
     const [newListName, setNewListName] = useState('')
     const [creating, setCreating] = useState(false)
     const popoverRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        setHydrated(true)
-    }, [])
+    const hydrated = useSyncExternalStore(
+        useCallback(() => () => {}, []),
+        () => true,
+        () => false,
+    )
 
     const inActiveList = isInList(name, activeListId)
     const displayInActiveList = hydrated && inActiveList

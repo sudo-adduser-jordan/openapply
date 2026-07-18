@@ -214,7 +214,7 @@ export function AllJobsList({ jobs, hideCompanyName = false }: AllJobsListProps)
                 setLocalSearchText(newSearch)
             }
         },
-        [localSearchText, setCompanies, setLocations, setAgeFilter, startTransition],
+        [localSearchText, setCompanies, setLocations, setAgeFilter, setLocalSearchText, startTransition],
     )
 
     const hasJobs = jobs.length > 0

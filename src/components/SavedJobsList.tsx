@@ -33,7 +33,7 @@ export function SavedJobsList({ jobs }: SavedJobsListProps) {
     const unavailableJobs = useMemo(() => saved.filter((savedItem) => !jobs.find((job) => job.ats_id === savedItem.ats_id)), [saved, jobs])
 
     const processedJobs = useMemo(() => {
-        let filtered = filterJobsBySearch(availableSavedJobs, debouncedSearchText)
+        const filtered = filterJobsBySearch(availableSavedJobs, debouncedSearchText)
 
         const sorted = [...filtered]
         switch (sortBy) {

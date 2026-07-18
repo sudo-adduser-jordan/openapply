@@ -40,7 +40,7 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
     )
 
     const processedJobs = useMemo(() => {
-        let filtered = filterJobsBySearch(availableAppliedJobs, debouncedSearchText)
+        const filtered = filterJobsBySearch(availableAppliedJobs, debouncedSearchText)
 
         const sorted = [...filtered]
         switch (sortBy) {
