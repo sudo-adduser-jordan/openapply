@@ -14,13 +14,18 @@ export function useSyncedSearchParam(
     const [localValue, setLocalValue] = useState(urlValue || defaultValue)
     const debouncedValue = useDebounce(localValue, debounceMs)
     const isInternalRef = useRef(false)
+    const localValueRef = useRef(localValue)
 
     useEffect(() => {
-        if (!isInternalRef.current && urlValue !== localValue) {
+        localValueRef.current = localValue
+    })
+
+    useEffect(() => {
+        if (!isInternalRef.current && urlValue !== localValueRef.current) {
             setLocalValue(urlValue || defaultValue)
         }
         isInternalRef.current = false
-    }, [urlValue, localValue, defaultValue])
+    }, [urlValue, defaultValue])
 
     useEffect(() => {
         if (debouncedValue !== urlValue) {
