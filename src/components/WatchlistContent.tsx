@@ -4,27 +4,13 @@ import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { ClearAllConfirm } from '@/components/ClearAllConfirm'
 import { ListNameInput } from '@/components/ListNameInput'
 import Link from 'next/link'
-import clsx from 'clsx'
 import { useSavedCompanies } from '@/hooks/use-saved-companies'
-import { SaveCompanyButton } from '@/components/SaveCompanyButton'
-import { generateCompanySlug } from '@/utils/format'
 import type { JobMarker, WatchlistItem } from '@/types'
 import type { WatchlistCategory } from '@/types'
-import { Building, PencilIcon, XIcon, PlusIcon, SearchIcon } from './icons'
-
-const JOBS_PER_PAGE = 50
-const RECENT_DAYS = 14
-
-function hasRecentJobs(companyName: string, allJobs: JobMarker[] | null): boolean {
-    if (!allJobs) return false
-    const now = Date.now()
-    const cutoff = now - RECENT_DAYS * 24 * 60 * 60 * 1000
-    return allJobs.some((job) => {
-        if (job.company !== companyName || !job.posted_at) return false
-        const t = new Date(job.posted_at).getTime()
-        return !isNaN(t) && t >= cutoff && t <= now
-    })
-}
+import { Building, XIcon, PlusIcon, SearchIcon } from './icons'
+import { ListTab } from './ListTab'
+import { CategoryTab } from './CategoryTab'
+import { WatchlistCompanyCard } from './WatchlistCompanyCard'
 
 function LoadingSkeleton() {
     return (
@@ -80,17 +66,6 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
     const activeItems = useMemo(() => itemsForList(activeListId), [itemsForList, activeListId])
 
     const activeCompanyNames = useMemo(() => activeItems.map((item) => item.name), [activeItems])
-
-    const groupedJobs = useMemo(() => {
-        const map = new Map<string, JobMarker[]>()
-        for (const name of activeCompanyNames) {
-            const companyJobs = allJobs.filter((j) => j.company === name).slice(0, JOBS_PER_PAGE)
-            if (companyJobs.length > 0) {
-                map.set(name, companyJobs)
-            }
-        }
-        return map
-    }, [allJobs, activeCompanyNames])
 
     const activeCategory = activeCategoryId ? (categories.find((c) => c.id === activeCategoryId) ?? null) : null
 
@@ -164,111 +139,23 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                     const showDelete = confirmDeleteId === list.id
 
                     return (
-                        <div key={list.id} className='relative shrink-0'>
-                            {isRenaming ? (
-                                <div className='flex items-center rounded-full border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
-                                    <input
-                                        ref={renameInputRef}
-                                        value={renameValue}
-                                        onChange={(e) => setRenameValue(e.target.value)}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
-                                                e.preventDefault()
-                                                handleFinishRename()
-                                            }
-                                            if (e.key === 'Escape') {
-                                                setRenamingListId(null)
-                                                setRenameValue('')
-                                            }
-                                        }}
-                                        onBlur={handleFinishRename}
-                                        className='w-24 bg-transparent text-[12px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-mute)]'
-                                        placeholder='List name'
-                                    />
-                                </div>
-                            ) : (
-                                <div
-                                    onClick={() => {
-                                        setActiveListId(list.id)
-                                        setActiveCategoryId(null)
-                                    }}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault()
-                                            setActiveListId(list.id)
-                                            setActiveCategoryId(null)
-                                        }
-                                    }}
-                                    role='button'
-                                    tabIndex={0}
-                                    className={clsx(
-                                        'group relative inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors whitespace-nowrap border cursor-pointer',
-                                        isActive
-                                            ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-                                            : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]',
-                                    )}
-                                >
-                                    <span>{list.name}</span>
-                                    <span className={clsx('text-[10px]', isActive ? 'text-blue-400/70' : 'text-[var(--ink-mute)]')}>
-                                        {count}
-                                    </span>
-                                    {!isActive && list.id !== DEFAULT_LIST_ID && (
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                e.stopPropagation()
-                                                handleStartRename(list)
-                                            }}
-                                            className='ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity text-[var(--ink-mute)] hover:text-[var(--ink)]'
-                                            aria-label={`Rename ${list.name}`}
-                                        >
-                                        <PencilIcon width={10} height={10} />
-                                        </button>
-                                    )}
-                                    {!isActive && list.id !== DEFAULT_LIST_ID && (
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                e.stopPropagation()
-                                                setConfirmDeleteId(list.id)
-                                            }}
-                                            className='ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity text-[var(--ink-mute)] hover:text-red-400'
-                                            aria-label={`Delete ${list.name}`}
-                                        >
-                                        <XIcon width={10} height={10} />
-                                        </button>
-                                    )}
-                                </div>
-                            )}
-
-                            {showDelete && (
-                                <div className='absolute left-1/2 -translate-x-1/2 top-full mt-1.5 z-50 min-w-[140px] rounded-lg border border-[var(--line)] bg-[var(--paper-3)] p-2 shadow-xl'>
-                                    <p className='text-[11px] text-[var(--ink)] mb-2 px-1'>Delete &ldquo;{list.name}&rdquo;?</p>
-                                    <div className='flex gap-1.5 justify-end'>
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                e.stopPropagation()
-                                                setConfirmDeleteId(null)
-                                            }}
-                                            className='px-2 py-0.5 text-[11px] text-[var(--ink-mute)] hover:text-[var(--ink)] rounded-md transition-colors'
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                e.stopPropagation()
-                                                handleDelete(list.id)
-                                            }}
-                                            className='px-2 py-0.5 text-[11px] font-medium text-white bg-red-500/60 hover:bg-red-500/80 rounded-md transition-colors'
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <ListTab
+                            key={list.id}
+                            list={list}
+                            isActive={isActive}
+                            count={count}
+                            isRenaming={isRenaming}
+                            renameValue={renameValue}
+                            onRenameChange={setRenameValue}
+                            onFinishRename={handleFinishRename}
+                            onCancelRename={() => { setRenamingListId(null); setRenameValue('') }}
+                            onSelect={() => { setActiveListId(list.id); setActiveCategoryId(null) }}
+                            onStartRename={() => handleStartRename(list)}
+                            showDelete={showDelete}
+                            onConfirmDelete={() => setConfirmDeleteId(list.id)}
+                            onCancelDelete={() => setConfirmDeleteId(null)}
+                            onDelete={() => handleDelete(list.id)}
+                        />
                     )
                 })}
 
@@ -277,38 +164,17 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                 )}
                 {categories
                     .filter((cat) => cat.id !== DEFAULT_LIST_ID)
-                    .map((cat) => {
-                        const isActive = activeCategoryId === cat.id
-                        return (
-                            <div
-                                key={cat.id}
-                                onClick={() => {
-                                    setActiveCategoryId(activeCategoryId === cat.id ? null : cat.id)
-                                    if (activeCategoryId !== cat.id) setSearchQuery('')
-                                }}
-                                role='button'
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault()
-                                        setActiveCategoryId(activeCategoryId === cat.id ? null : cat.id)
-                                        if (activeCategoryId !== cat.id) setSearchQuery('')
-                                    }
-                                }}
-                                className={clsx(
-                                    'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors whitespace-nowrap border cursor-pointer shrink-0',
-                                    isActive
-                                        ? 'bg-violet-500/20 text-violet-400 border-violet-500/30'
-                                        : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]',
-                                )}
-                            >
-                                <span>{cat.name}</span>
-                                <span className={clsx('text-[10px]', isActive ? 'text-violet-400/70' : 'text-[var(--ink-mute)]')}>
-                                    {cat.companies.length}
-                                </span>
-                            </div>
-                        )
-                    })}
+                    .map((cat) => (
+                        <CategoryTab
+                            key={cat.id}
+                            cat={cat}
+                            isActive={activeCategoryId === cat.id}
+                            onSelect={() => {
+                                setActiveCategoryId(activeCategoryId === cat.id ? null : cat.id)
+                                if (activeCategoryId !== cat.id) setSearchQuery('')
+                            }}
+                        />
+                    ))}
 
                 {creating ? (
                     <div className='flex items-center gap-1.5 shrink-0 rounded-full border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
@@ -321,10 +187,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                             className='w-24 bg-transparent text-[12px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-mute)]'
                         />
                         <button
-                            onClick={() => {
-                                setCreating(false)
-                                setNewListName('')
-                            }}
+                            onClick={() => { setCreating(false); setNewListName('') }}
                             className='text-[var(--ink-mute)] hover:text-[var(--ink)] transition-colors'
                         >
                             <XIcon width={12} height={12} />
@@ -332,10 +195,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                     </div>
                 ) : (
                     <button
-                        onClick={() => {
-                            setCreating(true)
-                            setNewListName('')
-                        }}
+                        onClick={() => { setCreating(true); setNewListName('') }}
                         className='inline-flex items-center gap-1 rounded-full border border-dashed border-[var(--line)] px-3 py-1 text-[12px] text-[var(--ink-mute)] hover:text-[var(--ink)] hover:border-[var(--ink-soft)] transition-colors shrink-0'
                     >
                         <PlusIcon width={12} height={12} />
@@ -383,7 +243,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                     </h2>
                     <p className='text-[14px] text-[var(--ink-mute)] mb-6 max-w-sm'>
                         {activeCategory
-                            ? `Browse another watchlist above or search across all lists`
+                            ? 'Browse another watchlist above or search across all lists'
                             : watchlists.length > 1
                               ? 'Switch to another list or add companies from the map or companies page'
                               : 'Start watching companies to track their job openings here'}
@@ -399,36 +259,14 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                 </div>
             ) : (
                 <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2'>
-                    {(activeCategory ? activeFilteredCompanies : activeItems).map((entry: { name: string } | WatchlistItem) => {
-                        const name = entry.name
-                        const slug = generateCompanySlug(name)
-                        const jobs = !activeCategory ? groupedJobs.get(name) || [] : []
-                        const recent = hasRecentJobs(name, allJobs)
-                        return (
-                            <div
-                                key={name}
-                                className='group flex items-center justify-between gap-1 rounded-lg border border-[var(--line)] bg-[var(--paper-3)] px-3 py-2 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)] transition-colors'
-                            >
-                                <Link
-                                    href={`/jobs/${slug}`}
-                                    className='text-[12px] font-medium text-[var(--ink)] no-underline hover:text-blue-400 transition-colors truncate min-w-0'
-                                >
-                                    {name}
-                                </Link>
-                                <div className='flex items-center gap-1.5 shrink-0'>
-                                    {recent && (
-                                        <span className='inline-flex items-center gap-1 rounded-full bg-[var(--brand-tint)] px-1.5 py-0.5 text-[9px] font-medium text-[var(--brand-deep)]'>
-                                            New
-                                        </span>
-                                    )}
-                                    {!activeCategory && jobs.length > 0 && (
-                                        <span className='text-[10px] text-[var(--ink-mute)]'>{jobs.length}</span>
-                                    )}
-                                    <SaveCompanyButton name={name} slug={slug} variant='icon' />
-                                </div>
-                            </div>
-                        )
-                    })}
+                    {(activeCategory ? activeFilteredCompanies : activeItems).map((entry: { name: string } | WatchlistItem) => (
+                        <WatchlistCompanyCard
+                            key={entry.name}
+                            name={entry.name}
+                            allJobs={allJobs}
+                            activeCategory={Boolean(activeCategory)}
+                        />
+                    ))}
                 </div>
             )}
         </div>
