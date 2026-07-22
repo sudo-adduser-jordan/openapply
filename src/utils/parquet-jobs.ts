@@ -45,7 +45,6 @@ function rowToJobMarker(row: Record<string, unknown>): JobMarker {
         salary_summary: toString(row.salary_summary),
         experience: toString(row.experience),
         posted_at: toString(row.posted_at),
-        description: toString(row.description),
         ats_type: toString(row.ats_type),
         global_id: toString(row.global_id),
         is_remote: toBool(row.is_remote),

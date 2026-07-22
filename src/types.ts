@@ -10,7 +10,6 @@ export interface JobMarker {
     salary_summary?: string | null
     experience?: string | null
     posted_at?: string | null
-    description?: string | null
     ats_type?: string | null
     global_id?: string | null
     is_remote?: boolean | null
