@@ -80,7 +80,7 @@ export function PageHeader({ rightAction, showNav = true }: PageHeaderProps) {
                                 )
                                 const inner = (
                                     <>
-                                        <item.icon className={cn('size-5', item.iconClass)} />
+                                        {item.icon && <item.icon className={cn('size-5', item.iconClass)} />}
                                         {item.label}
                                     </>
                                 )

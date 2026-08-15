@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Checkmark, Building, Briefcase, Bookmark, GithubIcon, Eye, Database } from './icons'
+import { Checkmark, Bookmark, GithubIcon, Database } from './icons'
 
 const SITE = {
     name: 'OpenApply',
@@ -14,9 +14,9 @@ type NavItem = {
     label: string
     href: string
     internal: boolean
-    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
-    iconClass: string
-    hoverClass: string
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
+    iconClass?: string
+    hoverClass?: string
 }
 
 const VIOLET_ITEM = {
@@ -33,16 +33,18 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Jobs',
         href: '/jobs',
         internal: true,
-        icon: Briefcase,
-        iconClass: 'text-[color:var(--emerald)] transition-colors group-hover:text-[color:var(--emerald-deep)]',
         hoverClass: 'hover:bg-[color:var(--emerald-tint)] hover:text-[color:var(--emerald-deep)]',
     },
     {
         label: 'Companies',
         href: '/companies',
         internal: true,
-        icon: Building,
-        iconClass: 'text-[color:var(--violet)] transition-colors group-hover:text-[color:var(--violet-deep)]',
+        hoverClass: 'hover:bg-[color:var(--violet-tint)] hover:text-[color:var(--violet-deep)]',
+    },
+    {
+        label: 'Watchlists',
+        href: '/watchlist',
+        internal: true,
         hoverClass: 'hover:bg-[color:var(--violet-tint)] hover:text-[color:var(--violet-deep)]',
     },
     {
@@ -60,14 +62,6 @@ const NAV_ITEMS: NavItem[] = [
         icon: Bookmark,
         iconClass: 'text-[color:var(--brand)] transition-colors group-hover:text-[color:var(--brand-deep)]',
         hoverClass: 'hover:bg-[color:var(--brand-tint)] hover:text-[color:var(--brand-deep)]',
-    },
-    {
-        label: 'Watchlist',
-        href: '/watchlist',
-        internal: true,
-        icon: Eye,
-        iconClass: 'text-[color:var(--violet)] transition-colors group-hover:text-[color:var(--violet-deep)]',
-        hoverClass: 'hover:bg-[color:var(--violet-tint)] hover:text-[color:var(--violet-deep)]',
     },
     {
         label: 'GitHub',
@@ -99,7 +93,7 @@ export function IconNavLinks({ items = NAV_ITEMS }: { items?: NavItem[] } = {}) 
                 const className = cn(NAV_LINK_CLASS, item.hoverClass)
                 const inner = (
                     <>
-                        <item.icon className={cn('size-4', item.iconClass)} />
+                        {item.icon && <item.icon className={cn('size-4', item.iconClass)} />}
                         {item.label}
                     </>
                 )

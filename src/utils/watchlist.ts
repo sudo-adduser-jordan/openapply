@@ -2,9 +2,9 @@ import { fetchAndParseParquet } from '@/utils/parquet'
 import type { WatchlistCategory, WatchlistCompany } from '@/types'
 
 const WATCHLIST_FILES = [
-    { id: '500', name: '500', description: 'Top 500 companies', file: 'watchlist/500.parquet' },
-    { id: '1000', name: '1000', description: '1000 companies', file: 'watchlist/1000.parquet' },
-    { id: '2000', name: '2000', description: '2000 companies', file: 'watchlist/2000.parquet' },
+    { id: '500', name: '500', description: 'Top 500 companies', file: 'watchlists/500.parquet' },
+    { id: '1000', name: '1000', description: '1000 companies', file: 'watchlists/1000.parquet' },
+    { id: '2000', name: '2000', description: '2000 companies', file: 'watchlists/2000.parquet' },
 ]
 
 function toString(val: unknown): string {

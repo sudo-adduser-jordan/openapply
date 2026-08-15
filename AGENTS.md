@@ -70,7 +70,7 @@ Data source: `sudo-adduser-jordan/openats` — parquet files hosted on GitHub.
 | `url`  | string | Company career page URL |
 | `raw`  | string | Raw scraped data        |
 
-### watchlist/*.parquet
+### watchlists/*.parquet
 
 | Column         | Type   | Description             |
 | -------------- | ------ | ----------------------- |

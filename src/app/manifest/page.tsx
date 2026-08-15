@@ -236,7 +236,7 @@ export default async function ManifestPage() {
                         maxItems={12}
                     />
                     <ManifestFilterableGrid
-                        label='Watchlist · by Category'
+                        label='Watchlists · by Category'
                         dotColor='var(--c-violet)'
                         fileCount={watchlistCards.length}
                         filterPlaceholder={`search ${watchlistCards.length} categories by name…`}

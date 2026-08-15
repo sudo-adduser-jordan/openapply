@@ -8,7 +8,7 @@ import { fetchJobsSafe } from '@/utils/jobs'
 import { fetchWatchlistCategories } from '@/utils/watchlist'
 
 export const metadata: Metadata = {
-    title: 'Watchlist | OpenApply',
+    title: 'Watchlists | OpenApply',
 }
 
 export default async function WatchlistPage() {
@@ -26,7 +26,7 @@ export default async function WatchlistPage() {
 
             <main className='mx-auto w-full max-w-5xl px-6 pb-16 pt-8'>
                 <div className='mb-6'>
-                    <h1 className='text-3xl font-semibold tracking-tight md:text-4xl'>Watchlist</h1>
+                    <h1 className='text-3xl font-semibold tracking-tight md:text-4xl'>Watchlists</h1>
                     <p className='mt-1 text-[14px] text-[var(--ink-mute)]'>Companies you&apos;re tracking — browse their latest openings</p>
                 </div>
 
