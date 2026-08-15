@@ -37,7 +37,7 @@ export function WatchlistCompanyCard({ name, allJobs, activeCategory }: Watchlis
     }, [allJobs, name])
 
     return (
-        <div className='group flex items-center justify-between gap-1 rounded-lg border border-[var(--line)] bg-[var(--paper-3)] px-3 py-2 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)] transition-colors'>
+        <div className='group flex items-center justify-between gap-1 rounded-lg border border-[var(--line)] bg-[var(--paper-3)] px-3 py-2 hover:bg-[var(--hover-bg)] transition-colors'>
             <Link
                 href={`/jobs/${slug}`}
                 className='text-[12px] font-medium text-[var(--ink)] no-underline hover:text-blue-400 transition-colors truncate min-w-0'

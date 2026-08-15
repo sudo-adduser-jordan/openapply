@@ -251,7 +251,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                     <div className='flex gap-3'>
                         <Link
                             href='/companies'
-                            className='inline-flex items-center gap-2 px-4 py-2 bg-[var(--paper-3)] text-[var(--ink)] rounded-md border border-[var(--line)] text-[13px] font-medium no-underline transition-[border-color,background-color] duration-200 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
+                            className='inline-flex items-center gap-2 px-4 py-2 bg-[var(--paper-3)] text-[var(--ink)] rounded-md border border-[var(--line)] text-[13px] font-medium no-underline transition-[border-color,background-color] duration-200 hover:bg-[var(--hover-bg)]'
                         >
                             Browse Companies
                         </Link>

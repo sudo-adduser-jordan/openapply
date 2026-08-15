@@ -181,7 +181,7 @@ export default function LandingPage() {
                             <Link
                                 href='/jobs'
                                 autoFocus
-                                className='group inline-flex items-center gap-2 rounded-md bg-[color:var(--brand)] px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[color:var(--brand-deep)]'
+                                className='group inline-flex items-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[color:var(--brand-deep)]'
                             >
                                 OpenApply
                                 <ArrowRightIcon className='size-4 transition-transform group-hover:translate-x-1' aria-hidden='true' />
@@ -190,7 +190,7 @@ export default function LandingPage() {
                                 href='https://github.com/kalil0321/stapply'
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                className='inline-flex items-center gap-2 rounded-md px-5 py-3 text-[14px] font-medium transition-colors text-[color:var(--ink-soft)] hover:bg-[color:var(--paper-3)]'
+                                className='inline-flex items-center gap-2 rounded-full px-5 py-3 text-[14px] font-medium transition-colors text-[color:var(--ink-soft)] hover:bg-[color:var(--paper-3)]'
                             >
                                 <GithubIcon className='size-4' aria-hidden='true' />
                                 View on GitHub

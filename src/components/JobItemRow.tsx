@@ -41,7 +41,7 @@ export function JobItemRow({
     return (
         <div
             key={uniqueKey}
-            className='group flex items-center justify-between gap-3 border-b border-dotted border-[var(--line-strong)] px-3.5 py-2.5 transition-colors last:border-b-0 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
+            className='group flex items-center justify-between gap-3 border-b border-dotted border-[var(--line-strong)] px-3.5 py-2.5 transition-colors last:border-b-0 hover:bg-[var(--hover-bg)]'
         >
             <div className='min-w-0 flex-1'>
                 <div className='flex items-center gap-2'>
@@ -58,12 +58,6 @@ export function JobItemRow({
                 <div className='mt-0.5 flex min-w-0 items-center gap-1.5 text-[12.5px] text-[var(--ink-mute)]'>
                     {!hideCompanyName && (
                         <span className='contents max-sm:hidden'>
-                            <Link
-                                href={`/jobs?companies=${encodeURIComponent(job.company)}`}
-                                className='shrink-0 font-medium uppercase tracking-wide no-underline transition-colors hover:text-[var(--violet-deep)]'
-                            >
-                                {job.company}
-                            </Link>
                             <button
                                 type='button'
                                 onClick={(e) => {
@@ -90,6 +84,12 @@ export function JobItemRow({
                             >
                                 {compIncluded ? '✓' : compExcluded ? '−' : '+'}
                             </button>
+                            <Link
+                                href={`/jobs?companies=${encodeURIComponent(job.company)}`}
+                                className='shrink-0 font-medium uppercase tracking-wide no-underline transition-colors hover:text-[var(--violet-deep)]'
+                            >
+                                {job.company}
+                            </Link>
                             <span className='opacity-40'>·</span>
                         </span>
                     )}

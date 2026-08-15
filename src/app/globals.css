@@ -51,6 +51,7 @@
     --c-amber: #f59e0b;
     --c-violet: #a78bfa;
     --radius-pill: 999px;
+    --hover-bg: color-mix(in oklab, var(--fg) 8%, transparent);
     /* Height of the sticky PageHeader — used to offset fixed overlays (e.g. the job sheet). */
     --header-h: 57px;
 
@@ -95,6 +96,7 @@
     --c-amber: #d97706;
     --c-violet: #7c3aed;
     --radius-pill: 999px;
+    --hover-bg: color-mix(in oklab, var(--fg) 4%, transparent);
     --header-h: 57px;
 
     line-height: 1.5;

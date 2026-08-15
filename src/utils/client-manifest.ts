@@ -113,7 +113,7 @@ export function computeManifest(jobs: JobMarker[], watchlistTotalCompanies: numb
             },
             watchlist: { columns: ['ats', 'company_name', 'company_slug', 'notes', 'created_at'] },
         },
-        stats: { ...stats, schema_columns: [], schema_version: '2.0' },
+        stats: { ...stats, schema_columns: [], schema_version: '1' },
         version: '2.0',
         generated_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),

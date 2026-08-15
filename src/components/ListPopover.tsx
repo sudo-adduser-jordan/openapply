@@ -53,7 +53,7 @@ export function ListPopover({
                                 handleListToggle(list.id)
                                 onClose()
                             }}
-                            className='flex w-full items-center gap-2 px-3 py-1.5 text-left text-[13px] text-[var(--ink)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)] transition-colors'
+                            className='flex w-full items-center gap-2 px-3 py-1.5 text-left text-[13px] text-[var(--ink)] hover:bg-[var(--hover-bg)] transition-colors'
                         >
                             <StarIcon
                                 width={12}
@@ -113,7 +113,7 @@ export function ListPopover({
                         e.stopPropagation()
                         setCreating(true)
                     }}
-                    className='flex w-full items-center gap-2 border-t border-[var(--line)] px-3 py-2 text-[12px] text-[var(--ink-mute)] hover:text-[var(--ink)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)] transition-colors rounded-b-xl'
+                    className='flex w-full items-center gap-2 border-t border-[var(--line)] px-3 py-2 text-[12px] text-[var(--ink-mute)] hover:text-[var(--ink)] hover:bg-[var(--hover-bg)] transition-colors rounded-b-xl'
                 >
                 <PlusIcon width={12} height={12} />
                     New List

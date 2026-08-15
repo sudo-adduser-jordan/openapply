@@ -22,7 +22,7 @@ export function CategoryTab({ cat, isActive, onSelect }: CategoryTabProps) {
                 'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-[12px] font-medium transition-colors whitespace-nowrap border cursor-pointer shrink-0',
                 isActive
                     ? 'bg-violet-500/20 text-violet-400 border-violet-500/30'
-                    : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]',
+                    : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[var(--hover-bg)]',
             )}
         >
             <span>{cat.name}</span>

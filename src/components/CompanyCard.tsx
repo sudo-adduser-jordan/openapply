@@ -14,7 +14,7 @@ export function CompanyCard({ name, jobCount, hasNewJobs }: CompanyCardProps) {
     return (
         <Link
             href={`/jobs?companies=${encodeURIComponent(name)}`}
-            className='group border-b border-r border-dotted border-[var(--line-strong)] p-4 no-underline transition-colors hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
+            className='group border-b border-r border-dotted border-[var(--line-strong)] p-4 no-underline transition-colors hover:bg-[var(--hover-bg)]'
         >
             <div className='mt-2 flex items-center justify-between gap-3'>
                 <h3 className='truncate text-[15px] font-semibold uppercase leading-tight tracking-tight text-[var(--ink)]'>

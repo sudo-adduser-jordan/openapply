@@ -66,7 +66,7 @@ export function ListTab({
                         'group relative inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-[12px] font-medium transition-colors whitespace-nowrap border cursor-pointer',
                         isActive
                             ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-                            : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]',
+                            : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[var(--hover-bg)]',
                     )}
                 >
                     <span>{list.name}</span>
