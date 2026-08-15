@@ -131,7 +131,7 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                             actions={
                                                 <>
                                                     {appliedDate && !isEditing && (
-                                                        <span className='text-[10px] md:text-[11px] font-medium rounded-full px-[6px] py-0.5 border bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)]'>
+                                                        <span className='text-[10px] md:text-[11px] font-medium rounded-md px-[6px] py-0.5 border bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)]'>
                                                             Applied {appliedDate}
                                                         </span>
                                                     )}
@@ -151,13 +151,13 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                                                 setEditingJobId(job.ats_id)
                                                                 setEditDateValue(formatAppliedInputDate(appliedAt))
                                                             }}
-                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
+                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
                                                         >
                                                             Edit date
                                                         </button>
                                                         <button
                                                             onClick={() => unmarkApplied(job.ats_id)}
-                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-400'
+                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-400'
                                                         >
                                                             Remove
                                                         </button>
@@ -168,14 +168,14 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                                             type='date'
                                                             value={editDateValue}
                                                             onChange={(e) => setEditDateValue(e.target.value)}
-                                                            className='px-2 py-0.5 rounded-full bg-[var(--paper-3)] text-[var(--ink)] text-[11px] md:text-[12px] border border-[var(--line)]'
+                                                            className='px-2 py-0.5 rounded-md bg-[var(--paper-3)] text-[var(--ink)] text-[11px] md:text-[12px] border border-[var(--line)]'
                                                         />
                                                         <button
                                                             onClick={() => {
                                                                 updateAppliedDate(job.ats_id, toIsoFromDateInput(editDateValue))
                                                                 setEditingJobId(null)
                                                             }}
-                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
+                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
                                                         >
                                                             Save
                                                         </button>
@@ -184,7 +184,7 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                                                 setEditingJobId(null)
                                                                 setEditDateValue('')
                                                             }}
-                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
+                                                            className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
                                                         >
                                                             Cancel
                                                         </button>

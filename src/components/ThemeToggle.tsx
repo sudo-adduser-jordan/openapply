@@ -33,7 +33,7 @@ export function ThemeToggle() {
     )
 
     return (
-        <div className='inline-flex items-center rounded-[var(--radius-pill)] border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)]'>
+        <div className='inline-flex items-center rounded-md border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)]'>
             <button onClick={() => select('light')} className={tab(theme === 'light')}>
                 <SunIcon width={13} height={13} />
                 Light

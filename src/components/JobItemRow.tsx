@@ -108,7 +108,7 @@ export function JobItemRow({
                 {formattedDate && (
                     <span
                         className={clsx(
-                            'rounded-[var(--radius-pill)] px-[6px] py-0.5 text-[10px] font-medium',
+                            'rounded-md px-[6px] py-0.5 text-[10px] font-medium',
                             formattedDate === 'New'
                                 ? 'bg-[var(--brand-tint)] text-[var(--brand-deep)]'
                                 : 'bg-[var(--paper-3)] text-[var(--ink-soft)]',

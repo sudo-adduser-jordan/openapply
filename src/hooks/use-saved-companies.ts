@@ -182,30 +182,15 @@ function removeFromListInStorage(name: string, listId: string): void {
     writeData(data)
 }
 
-function getItemsForList(listId: string): WatchlistItem[] {
-    return getWatchlistData().items.filter((item) => item.listId === listId)
-}
-
 function isInList(name: string, listId: string): boolean {
     return getWatchlistData().items.some((item) => item.name === name && item.listId === listId)
 }
 
 export function useSavedCompanies(): UseSavedCompaniesReturn {
-    const [savedCompanies, setSavedCompanies] = useState<WatchlistItem[]>(() => {
-        if (typeof window !== 'undefined') return getSavedCompanies()
-        return []
-    })
-    const [savedCompanyNames, setSavedCompanyNames] = useState<string[]>(() => savedCompanies.map((c) => c.name))
-    const [watchlists, setWatchlists] = useState<WatchlistMeta[]>(() => {
-        if (typeof window !== 'undefined') return getWatchlists()
-        return []
-    })
-    const [activeListId, setActiveListIdState] = useState<string>(() => {
-        if (typeof window !== 'undefined') {
-            return getActiveListId()
-        }
-        return 'default'
-    })
+    const [savedCompanies, setSavedCompanies] = useState<WatchlistItem[]>([])
+    const [savedCompanyNames, setSavedCompanyNames] = useState<string[]>([])
+    const [watchlists, setWatchlists] = useState<WatchlistMeta[]>([])
+    const [activeListId, setActiveListIdState] = useState<string>(DEFAULT_LIST_ID)
     const [isLoading] = useState(false)
 
     const refresh = useCallback(() => {
@@ -216,6 +201,9 @@ export function useSavedCompanies(): UseSavedCompaniesReturn {
     }, [])
 
     useEffect(() => {
+        refresh()
+        setActiveListIdState(getActiveListId())
+
         const handleStorageChange = (e: StorageEvent) => {
             if (e.key === 'saved-companies' || e.key === 'saved-companies-active-list') {
                 refresh()
@@ -335,9 +323,10 @@ export function useSavedCompanies(): UseSavedCompaniesReturn {
         [activeListId, savedCompanies, refresh],
     )
 
-    const itemsForList = useCallback((listId: string): WatchlistItem[] => {
-        return getItemsForList(listId)
-    }, [])
+    const itemsForList = useCallback(
+        (listId: string): WatchlistItem[] => savedCompanies.filter((item) => item.listId === listId),
+        [savedCompanies],
+    )
 
     const handleIsInList = useCallback((name: string, listId: string): boolean => {
         return isInList(name, listId)

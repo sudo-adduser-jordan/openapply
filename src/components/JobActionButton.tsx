@@ -44,13 +44,13 @@ const variantStyles = {
         showLabel: false,
     },
     button: {
-        wrap: `${BASE} px-3 py-1.5 rounded-full text-[12px] font-medium`,
+        wrap: `${BASE} px-3 py-1.5 rounded-md text-[12px] font-medium`,
         iconW: 14,
         iconH: 14,
         showLabel: true,
     },
     compact: {
-        wrap: `${BASE} px-[10px] py-0.5 rounded-full text-[11px] md:text-[12px] font-medium`,
+        wrap: `${BASE} px-[10px] py-0.5 rounded-md text-[11px] md:text-[12px] font-medium`,
         iconW: 10,
         iconH: 10,
         iconCls: 'md:w-[11px] md:h-[11px]',

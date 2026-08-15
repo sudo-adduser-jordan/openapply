@@ -39,7 +39,7 @@ export function SearchField({ value, onChange, placeholder, onKeyDown, autoFocus
     return (
         <div
             className={clsx(
-                'relative flex items-center rounded-[var(--radius-pill)] border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] transition-colors focus-within:border-[var(--brand)]',
+                'relative flex items-center rounded-md border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] transition-colors focus-within:border-[var(--brand)]',
                 disabled && 'opacity-50',
                 className,
             )}

@@ -59,7 +59,7 @@ function PillInput({ value, onChange, placeholder }: { value: string; onChange: 
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
-                className='h-7 w-24 rounded-[var(--radius-pill)] border border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] px-2.5 text-[12px] text-[var(--ink)] placeholder:text-[var(--ink-mute)] transition-colors focus:border-[var(--brand)] focus:outline-none'
+                className='h-7 w-24 rounded-md border border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] px-2.5 text-[12px] text-[var(--ink)] placeholder:text-[var(--ink-mute)] transition-colors focus:border-[var(--brand)] focus:outline-none'
             />
             {value && (
                 <button
@@ -75,7 +75,7 @@ function PillInput({ value, onChange, placeholder }: { value: string; onChange: 
 
 const pill = (active: boolean) =>
     clsx(
-        'inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium transition-colors',
+        'inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1 text-[12px] font-medium transition-colors',
         active ? 'bg-[var(--violet-tint)] text-[var(--violet-deep)]' : 'bg-[var(--paper-3)] text-[var(--ink-soft)] hover:text-[var(--ink)]',
     )
 
@@ -252,7 +252,7 @@ export function CompaniesList({ companies }: CompaniesListProps) {
                 <SearchField value={localSearchText} onChange={setLocalSearchText} placeholder='Search companies…' className='flex-1' />
                 <button
                     onClick={() => setShowFilterModal(true)}
-                    className='inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-[var(--radius-pill)] border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] px-4 text-sm font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)]'
+                    className='inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-md border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] px-4 text-sm font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)]'
                 >
                     <FilterIcon className='size-4' />
                 </button>
@@ -292,7 +292,7 @@ export function CompaniesList({ companies }: CompaniesListProps) {
                         <div className='flex justify-center py-6'>
                             <button
                                 onClick={() => setVisibleCount(filteredCompanies.length)}
-                                className='cursor-pointer rounded-[var(--radius-pill)] border border-dotted border-[var(--line-strong)] px-5 py-2 text-[13px] font-medium text-[var(--ink-soft)] transition-colors hover:border-[var(--ink-soft)] hover:text-[var(--ink)]'
+                                className='cursor-pointer rounded-md border border-dotted border-[var(--line-strong)] px-5 py-2 text-[13px] font-medium text-[var(--ink-soft)] transition-colors hover:border-[var(--ink-soft)] hover:text-[var(--ink)]'
                             >
                                 Show more
                             </button>
@@ -366,7 +366,7 @@ export function CompaniesList({ companies }: CompaniesListProps) {
                             setUrlDept(null)
                             setUrlTeam(null)
                         }}
-                        className='w-full rounded-[var(--radius-pill)] border border-dotted border-[var(--line-strong)] px-3 py-2 text-[12px] font-medium text-[var(--ink-mute)] transition-colors hover:border-[var(--ink-soft)] hover:text-[var(--ink)]'
+                        className='w-full rounded-md border border-dotted border-[var(--line-strong)] px-3 py-2 text-[12px] font-medium text-[var(--ink-mute)] transition-colors hover:border-[var(--ink-soft)] hover:text-[var(--ink)]'
                     >
                         Clear all filters
                     </button>

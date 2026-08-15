@@ -14,10 +14,7 @@ function readList<T>(storageKey: string, validate: (item: unknown) => item is T)
 }
 
 export function useLocalStorageList<T extends { ats_id: string }>(storageKey: string, validate: (item: unknown) => item is T) {
-    const [items, setItems] = useState<T[]>(() => {
-        if (typeof window !== 'undefined') return readList(storageKey, validate)
-        return []
-    })
+    const [items, setItems] = useState<T[]>([])
 
     const ids = items.map((j) => j.ats_id)
 
@@ -26,6 +23,7 @@ export function useLocalStorageList<T extends { ats_id: string }>(storageKey: st
     }, [storageKey, validate])
 
     useEffect(() => {
+        refresh()
         const handleStorageChange = (e: StorageEvent) => {
             if (e.key === storageKey) refresh()
         }

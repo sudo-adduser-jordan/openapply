@@ -77,11 +77,11 @@ function SchemaSection({ label, dotColor, columns, version }: { label: string; d
     return (
         <div className='rounded-xl border border-[var(--line)] bg-[color-mix(in_oklab,var(--fg)_1.5%,transparent)] px-5 py-4'>
             <div className='mb-3 flex items-center gap-3'>
-                <span className='inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] bg-[var(--paper-3)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
+                <span className='inline-flex items-center gap-1.5 rounded-md bg-[var(--paper-3)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
                     <span aria-hidden='true' className='inline-block size-1.5 rounded-full' style={{ background: dotColor }} />
                     {label}
                 </span>
-                <span className='rounded-full border border-[var(--line-strong)] px-2.5 py-0.5 text-xs font-medium text-[var(--ink-mute)]'>
+                <span className='rounded-md border border-[var(--line-strong)] px-2.5 py-0.5 text-xs font-medium text-[var(--ink-mute)]'>
                     v{version}
                 </span>
                 <span className='text-xs text-[var(--ink-soft)]'>{columns.length} columns</span>
@@ -138,7 +138,7 @@ export default async function ManifestPage() {
                 </header>
 
                 <div className='mb-6 flex items-center gap-2'>
-                    <span className='inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[var(--line)] bg-[var(--paper)] px-3 py-1 text-xs font-medium text-[var(--muted)]'>
+                    <span className='inline-flex items-center gap-1.5 rounded-md border border-[var(--line)] bg-[var(--paper)] px-3 py-1 text-xs font-medium text-[var(--muted)]'>
                         <span aria-hidden='true' className='inline-block size-1.5 rounded-full bg-[var(--c-emerald)]' />
                         24h retention
                     </span>
@@ -155,7 +155,7 @@ export default async function ManifestPage() {
 
                 <section className='mb-12'>
                     <div className='mb-4 flex items-center justify-between gap-3'>
-                        <span className='inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] bg-[var(--paper-3)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
+                        <span className='inline-flex items-center gap-1.5 rounded-md bg-[var(--paper-3)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
                             <span
                                 aria-hidden='true'
                                 className='inline-block size-1.5 rounded-full'

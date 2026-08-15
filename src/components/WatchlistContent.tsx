@@ -177,7 +177,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                     ))}
 
                 {creating ? (
-                    <div className='flex items-center gap-1.5 shrink-0 rounded-full border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
+                    <div className='flex items-center gap-1.5 shrink-0 rounded-md border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
                         <ListNameInput
                             inputRef={createInputRef}
                             value={newListName}
@@ -196,7 +196,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                 ) : (
                     <button
                         onClick={() => { setCreating(true); setNewListName('') }}
-                        className='inline-flex items-center gap-1 rounded-full border border-dashed border-[var(--line)] px-3 py-1 text-[12px] text-[var(--ink-mute)] hover:text-[var(--ink)] hover:border-[var(--ink-soft)] transition-colors shrink-0'
+                        className='inline-flex items-center gap-1 rounded-md border border-dashed border-[var(--line)] px-3 py-1 text-[12px] text-[var(--ink-mute)] hover:text-[var(--ink)] hover:border-[var(--ink-soft)] transition-colors shrink-0'
                     >
                         <PlusIcon width={12} height={12} />
                         New List
@@ -251,7 +251,7 @@ export function WatchlistContent({ jobs: allJobs, watchlistCategories: categorie
                     <div className='flex gap-3'>
                         <Link
                             href='/companies'
-                            className='inline-flex items-center gap-2 px-4 py-2 bg-[var(--paper-3)] text-[var(--ink)] rounded-full border border-[var(--line)] text-[13px] font-medium no-underline transition-[border-color,background-color] duration-200 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
+                            className='inline-flex items-center gap-2 px-4 py-2 bg-[var(--paper-3)] text-[var(--ink)] rounded-md border border-[var(--line)] text-[13px] font-medium no-underline transition-[border-color,background-color] duration-200 hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]'
                         >
                             Browse Companies
                         </Link>

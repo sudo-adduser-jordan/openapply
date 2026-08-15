@@ -41,7 +41,7 @@ export function ListTab({
     return (
         <div className='relative shrink-0'>
             {isRenaming ? (
-                <div className='flex items-center rounded-full border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
+                <div className='flex items-center rounded-md border border-blue-400/50 bg-[var(--bg)] px-2 py-1'>
                     <input
                         value={renameValue}
                         onChange={(e) => onRenameChange(e.target.value)}
@@ -63,7 +63,7 @@ export function ListTab({
                     role='button'
                     tabIndex={0}
                     className={clsx(
-                        'group relative inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors whitespace-nowrap border cursor-pointer',
+                        'group relative inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-[12px] font-medium transition-colors whitespace-nowrap border cursor-pointer',
                         isActive
                             ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
                             : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)] hover:bg-[color-mix(in_oklab,var(--fg)_4%,transparent)]',

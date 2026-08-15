@@ -16,7 +16,7 @@ export default function LandingPage() {
             <main className='relative flex flex-1 items-center justify-center overflow-hidden'>
                 <div className='overflow-hidden bg-transparent px-6'>
                     <span
-                        className='pointer-events-none absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-[color:var(--brand)] text-white'
+                        className='pointer-events-none absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-[color:var(--brand)] text-white'
                         style={{
                             left: '4%',
                             top: '16%',
@@ -26,14 +26,15 @@ export default function LandingPage() {
                         4.5M roles
                     </span>
                     <span
-                        className='pointer-events-none absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-yellow-300 text-[#0b0d12]'
+                        className='pointer-events-none absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-yellow-300 text-[#0b0d12]'
                         style={{ left: '80%', top: '8%', transform: 'translate(0px) rotate(7deg)' }}
                     >
-                        49 ATS
+                        42 ATS
                     </span>
                     <Link
                         href='/jobs?companies=Ashby'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-pink-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-pink-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '11%',
                             top: '74%',
@@ -44,7 +45,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=OpenAI'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-emerald-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-emerald-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '82%',
                             top: '72%',
@@ -55,7 +57,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=Anthropic'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-violet-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-violet-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '1%',
                             top: '44%',
@@ -66,7 +69,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=Amazon'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-orange-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-orange-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '88%',
                             top: '42%',
@@ -77,7 +81,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=Apple'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex lab-pill-ink shadow-[var(--shadow-sm)] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex lab-pill-ink shadow-[var(--shadow-sm)] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '30%',
                             top: '6%',
@@ -88,7 +93,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=NVIDIA'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex lab-pill-paper bg-[color:var(--paper-3)] text-[#0b0d12] ring-1 ring-[color:var(--line-strong)] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex lab-pill-paper bg-[color:var(--paper-3)] text-[#0b0d12] ring-1 ring-[color:var(--line-strong)] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '64%',
                             top: '86%',
@@ -99,7 +105,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=Google'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-[color:var(--brand)] text-white cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-[color:var(--brand)] text-white cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '18%',
                             top: '90%',
@@ -110,7 +117,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=TikTok'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-yellow-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-yellow-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '72%',
                             top: '22%',
@@ -121,7 +129,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?companies=Microsoft'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-pink-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-pink-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '6%',
                             top: '60%',
@@ -132,7 +141,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?search=@location:NYC'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-emerald-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-emerald-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '90%',
                             top: '60%',
@@ -143,7 +153,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?search=@location:US'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-violet-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-violet-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{
                             left: '42%',
                             top: '90%',
@@ -154,7 +165,8 @@ export default function LandingPage() {
                     </Link>
                     <Link
                         href='/jobs?remote=true'
-                        className='absolute z-10 hidden items-center rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-orange-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        className='absolute z-10 hidden items-center rounded-md px-3 py-1 text-[12px] font-medium shadow-[var(--shadow-sm)] md:inline-flex bg-orange-300 text-[#0b0d12] cursor-pointer hover:scale-110 hover:shadow-lg transition-all'
+                        tabIndex={-1}
                         style={{ left: '56%', top: '4%', transform: 'translate(0px) rotate(4deg)' }}
                     >
                         Remote
@@ -168,7 +180,8 @@ export default function LandingPage() {
                         <div className='mt-7 flex flex-wrap items-center justify-center gap-3'>
                             <Link
                                 href='/jobs'
-                                className='group inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-[color:var(--brand)] px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[color:var(--brand-deep)]'
+                                autoFocus
+                                className='group inline-flex items-center gap-2 rounded-md bg-[color:var(--brand)] px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[color:var(--brand-deep)]'
                             >
                                 OpenApply
                                 <ArrowRightIcon className='size-4 transition-transform group-hover:translate-x-1' aria-hidden='true' />
@@ -177,7 +190,7 @@ export default function LandingPage() {
                                 href='https://github.com/kalil0321/stapply'
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                className='inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-5 py-3 text-[14px] font-medium transition-colors text-[color:var(--ink-soft)] hover:bg-[color:var(--paper-3)]'
+                                className='inline-flex items-center gap-2 rounded-md px-5 py-3 text-[14px] font-medium transition-colors text-[color:var(--ink-soft)] hover:bg-[color:var(--paper-3)]'
                             >
                                 <GithubIcon className='size-4' aria-hidden='true' />
                                 View on GitHub

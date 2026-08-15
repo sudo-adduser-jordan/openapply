@@ -27,7 +27,7 @@ export function CompanyCard({ name, jobCount, hasNewJobs }: CompanyCardProps) {
             <div className='mt-2 flex items-center justify-between gap-3'>
                 <span className='flex items-center gap-2 text-[12px] font-medium text-[var(--ink-mute)]'>
                     {hasNewJobs && (
-                        <span className='rounded-[var(--radius-pill)] bg-[var(--brand-tint)] px-[6px] py-0.5 text-[10px] font-medium text-[var(--brand-deep)]'>
+                        <span className='rounded-md bg-[var(--brand-tint)] px-[6px] py-0.5 text-[10px] font-medium text-[var(--brand-deep)]'>
                             New
                         </span>
                     )}

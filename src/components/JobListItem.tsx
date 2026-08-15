@@ -50,7 +50,7 @@ export function JobListItem({
                     {formatJobDate(job, now ? new Date(now) : undefined) && (
                         <span
                             className={clsx(
-                                'text-[10px] md:text-[11px] font-medium rounded-full px-[6px] py-0.5 border',
+                                'text-[10px] md:text-[11px] font-medium rounded-md px-[6px] py-0.5 border',
                                 formatJobDate(job, now ? new Date(now) : undefined) === 'New'
                                     ? 'bg-[var(--brand-tint)] text-[var(--brand-deep)] border-[var(--brand-tint)]'
                                     : 'bg-[var(--paper-3)] text-[var(--ink-soft)] border-[var(--line)]',
@@ -82,7 +82,7 @@ export function JobListItem({
                     href={addUtmParams(job.url)}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] no-underline rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
+                    className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] no-underline rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
                 >
                     View Job
                     <ExternalLinkIcon width={10} height={10} className='md:w-[11px] md:h-[11px]' />

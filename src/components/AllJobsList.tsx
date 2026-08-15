@@ -521,11 +521,11 @@ export function AllJobsList({ jobs, hideCompanyName = false, now: nowProp }: All
                         type='button'
                         onClick={() => setFilterOpen(true)}
                         disabled={!hasJobs}
-                        className='inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-[var(--radius-pill)] border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] px-4 text-sm font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)] disabled:cursor-not-allowed disabled:opacity-50'
+                        className='inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-md border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper-3)] px-4 text-sm font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)] disabled:cursor-not-allowed disabled:opacity-50'
                     >
                         <FilterIcon className='size-4' aria-hidden />
                         {extraActiveCount > 0 && (
-                            <span className='rounded-[var(--radius-pill)] bg-[var(--violet-tint)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--violet-deep)]'>
+                            <span className='rounded-md bg-[var(--violet-tint)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--violet-deep)]'>
                                 {extraActiveCount}
                             </span>
                         )}

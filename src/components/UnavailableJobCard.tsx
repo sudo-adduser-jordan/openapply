@@ -28,14 +28,14 @@ export function UnavailableJobCard({ atsId, name, company, onRemove }: Unavailab
                     )}
 
                     <div className='flex items-center gap-2 mb-2'>
-                        <span className='text-[11px] md:text-[13px] font-medium rounded-full px-[6px] py-0.5 border bg-red-500/10 text-red-400/80 border-red-500/20'>
+                        <span className='text-[11px] md:text-[13px] font-medium rounded-md px-[6px] py-0.5 border bg-red-500/10 text-red-400/80 border-red-500/20'>
                             No longer available
                         </span>
                     </div>
 
                     <button
                         onClick={() => onRemove(atsId)}
-                        className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-full text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-400'
+                        className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-400'
                     >
                         <XIcon width={10} height={10} className='md:w-[11px] md:h-[11px]' />
                         Remove

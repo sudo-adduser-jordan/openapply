@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { SaveCompanyButton } from '@/components/SaveCompanyButton'
 import { generateCompanySlug } from '@/utils/format'
 import type { JobMarker } from '@/types'
@@ -23,14 +23,17 @@ export function WatchlistCompanyCard({ name, allJobs, activeCategory }: Watchlis
         return allJobs.filter((j) => j.company === name).slice(0, JOBS_PER_PAGE)
     }, [allJobs, name, activeCategory])
 
-    const recent = useMemo(() => {
+    const [recent, setRecent] = useState(false)
+    useEffect(() => {
         const now = Date.now()
         const cutoff = now - RECENT_DAYS * 24 * 60 * 60 * 1000
-        return allJobs.some((job) => {
-            if (job.company !== name || !job.posted_at) return false
-            const t = new Date(job.posted_at).getTime()
-            return !isNaN(t) && t >= cutoff && t <= now
-        })
+        setRecent(
+            allJobs.some((job) => {
+                if (job.company !== name || !job.posted_at) return false
+                const t = new Date(job.posted_at).getTime()
+                return !isNaN(t) && t >= cutoff && t <= now
+            }),
+        )
     }, [allJobs, name])
 
     return (
@@ -43,7 +46,7 @@ export function WatchlistCompanyCard({ name, allJobs, activeCategory }: Watchlis
             </Link>
             <div className='flex items-center gap-1.5 shrink-0'>
                 {recent && (
-                    <span className='inline-flex items-center gap-1 rounded-full bg-[var(--brand-tint)] px-1.5 py-0.5 text-[9px] font-medium text-[var(--brand-deep)]'>
+                    <span className='inline-flex items-center gap-1 rounded-md bg-[var(--brand-tint)] px-1.5 py-0.5 text-[9px] font-medium text-[var(--brand-deep)]'>
                         New
                     </span>
                 )}

@@ -17,10 +17,12 @@ function calcAgo(iso: string): string {
 }
 
 export function TimeAgo({ iso }: { iso: string }) {
-    const [ago, setAgo] = useState(() => calcAgo(iso))
+    const [ago, setAgo] = useState<string | null>(null)
     useEffect(() => {
-        const id = setInterval(() => setAgo(calcAgo(iso)), 60000)
+        const update = () => setAgo(calcAgo(iso))
+        update()
+        const id = setInterval(update, 60000)
         return () => clearInterval(id)
     }, [iso])
-    return <>{ago}</>
+    return <>{ago ?? ''}</>
 }

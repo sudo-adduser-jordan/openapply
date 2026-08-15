@@ -12,7 +12,7 @@ function DownloadButton({ label, size, url }: { label: string; size: number; url
         <a
             href={url}
             title={size > 0 ? `download ${label} (${fmtBytes(size)})` : `download ${label}`}
-            className='inline-flex h-7 items-center gap-1.5 rounded-[var(--radius-pill)] border border-[var(--line)] bg-[var(--paper)] px-2.5 text-[11px] text-[var(--muted)] transition-colors hover:border-[var(--brand)] hover:bg-[var(--brand-tint)] hover:text-[var(--brand)]'
+            className='inline-flex h-7 items-center gap-1.5 rounded-md border border-[var(--line)] bg-[var(--paper)] px-2.5 text-[11px] text-[var(--muted)] transition-colors hover:border-[var(--brand)] hover:bg-[var(--brand-tint)] hover:text-[var(--brand)]'
         >
             <DownloadIcon className='h-2.5 w-2.5' />
             <span className='font-medium'>{label}</span>

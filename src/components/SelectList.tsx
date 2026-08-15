@@ -48,7 +48,7 @@ export function SelectList({
             onClick={() => onCycle(v)}
             title={mode === 'inc' ? 'Including — click to exclude' : 'Excluding — click to clear'}
             className={clsx(
-                'inline-flex items-center gap-1 rounded-[var(--radius-pill)] px-2 py-0.5 text-[11px] font-medium',
+                'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium',
                 uppercase && 'uppercase',
                 mode === 'inc'
                     ? 'bg-[var(--violet-tint)] text-[var(--violet-deep)]'

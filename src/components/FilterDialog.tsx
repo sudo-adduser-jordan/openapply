@@ -98,7 +98,7 @@ interface FilterDialogProps {
 
 const pill = (active: boolean) =>
     clsx(
-        'inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--radius-pill)] px-3 py-1 text-[12px] font-medium transition-colors',
+        'inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1 text-[12px] font-medium transition-colors',
         active ? 'bg-[var(--violet-tint)] text-[var(--violet-deep)]' : 'bg-[var(--paper-3)] text-[var(--ink-soft)] hover:text-[var(--ink)]',
     )
 
@@ -225,7 +225,7 @@ export function FilterDialog({ isOpen, onClose, jobs, onApplyFilters, current, s
                     <div className='flex items-center gap-2'>
                         <h2 className='lab-header m-0 text-[16px] font-normal tracking-tight'>Filter jobs</h2>
                         {activeCount > 0 && (
-                            <span className='rounded-[var(--radius-pill)] bg-[var(--violet-tint)] px-2 py-0.5 text-[11px] font-medium text-[var(--violet-deep)]'>
+                            <span className='rounded-md bg-[var(--violet-tint)] px-2 py-0.5 text-[11px] font-medium text-[var(--violet-deep)]'>
                                 {activeCount} active
                             </span>
                         )}
@@ -419,13 +419,13 @@ export function FilterDialog({ isOpen, onClose, jobs, onApplyFilters, current, s
                     <div className='flex items-center gap-2'>
                         <button
                             onClick={onClose}
-                            className='rounded-[var(--radius-pill)] bg-[var(--paper-3)] px-4 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)]'
+                            className='rounded-md bg-[var(--paper-3)] px-4 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)]'
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleApply}
-                            className='rounded-[var(--radius-pill)] bg-[var(--violet-solid)] px-4 py-1.5 text-[13px] font-medium text-white transition-colors hover:bg-[var(--violet-solid-hover)]'
+                            className='rounded-md bg-[var(--violet-solid)] px-4 py-1.5 text-[13px] font-medium text-white transition-colors hover:bg-[var(--violet-solid-hover)]'
                         >
                             Show {matchCount.toLocaleString()} {matchCount === 1 ? 'job' : 'jobs'}
                         </button>

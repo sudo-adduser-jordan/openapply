@@ -40,13 +40,13 @@ export function ManifestFilterableGrid({
     return (
         <section>
             <div className='mb-4 flex items-center justify-between gap-3'>
-                <span className='inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] bg-[var(--paper-3)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
+                <span className='inline-flex items-center gap-1.5 rounded-md bg-[var(--paper-3)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
                     <span aria-hidden='true' className='inline-block size-1.5 rounded-full' style={{ background: dotColor }} />
                     {label}
                 </span>
                 <span className='text-xs text-[var(--muted)]'>{fileCount} files</span>
             </div>
-            <div className='relative mb-4 flex items-center rounded-[var(--radius-pill)] border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper)] transition-colors focus-within:border-[var(--brand)]'>
+            <div className='relative mb-4 flex items-center rounded-md border-2 border-dotted border-[var(--line-strong)] bg-[var(--paper)] transition-colors focus-within:border-[var(--brand)]'>
                 <span
                     aria-hidden='true'
                     className='pointer-events-none flex h-10 w-10 items-center justify-center text-[var(--muted)] max-sm:h-8 max-sm:w-8'

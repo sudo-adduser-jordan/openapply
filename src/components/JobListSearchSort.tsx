@@ -56,7 +56,7 @@ export function JobListSearchSort({
                             key={option.value}
                             onClick={() => onSortChange(option.value)}
                             className={clsx(
-                                'px-[10px] py-1 rounded-full text-[11px] font-medium',
+                                'px-[10px] py-1 rounded-md text-[11px] font-medium',
                                 'transition-[border-color,background-color] duration-200 ease-in-out cursor-pointer',
                                 sortBy === option.value
                                     ? 'bg-[var(--violet-tint)] border border-[var(--violet)] text-[var(--violet)]'

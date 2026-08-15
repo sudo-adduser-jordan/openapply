@@ -17,7 +17,7 @@ export function EmptyStateNoItems({ icon, title, description }: EmptyStateNoItem
             <div className='flex gap-3'>
                 <Link
                     href='/jobs'
-                    className='inline-flex items-center gap-2 px-4 py-2 bg-[var(--paper-3)] text-[var(--ink)] rounded-full border border-[var(--line)] text-[13px] font-medium no-underline transition-[border-color,background-color] duration-200 hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
+                    className='inline-flex items-center gap-2 px-4 py-2 bg-[var(--paper-3)] text-[var(--ink)] rounded-md border border-[var(--line)] text-[13px] font-medium no-underline transition-[border-color,background-color] duration-200 hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
                 >
                     Browse Jobs
                 </Link>
