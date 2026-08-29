@@ -11,6 +11,10 @@ export const metadata: Metadata = {
         index: false,
         follow: false,
     },
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#fafaf9' },
+        { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    ],
     icons: {
         icon: [
             { url: '/favicon.svg', type: 'image/svg+xml' },

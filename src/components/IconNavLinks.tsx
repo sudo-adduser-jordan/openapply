@@ -4,7 +4,6 @@ import { Checkmark, Bookmark, GithubIcon, Database } from './icons'
 const SITE = {
     name: 'OpenApply',
     dataUrl: '/manifest',
-    githubUrl: 'https://github.com/sudo-adduser-jordan/ats',
     githubMapUrl: 'https://github.com/sudo-adduser-jordan/openapply',
 } as const
 
@@ -62,13 +61,6 @@ const NAV_ITEMS: NavItem[] = [
         icon: Bookmark,
         iconClass: 'text-[color:var(--brand)] transition-colors group-hover:text-[color:var(--brand-deep)]',
         hoverClass: 'hover:bg-[color:var(--brand-tint)] hover:text-[color:var(--brand-deep)]',
-    },
-    {
-        label: 'GitHub',
-        href: SITE.githubMapUrl,
-        internal: false,
-        icon: GithubIcon,
-        ...INK_ITEM,
     },
 ]
 

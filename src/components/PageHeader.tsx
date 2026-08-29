@@ -8,7 +8,7 @@ import { XIcon, MenuIcon } from './icons'
 
 interface PageHeaderProps {
     rightAction?: React.ReactNode
-    /** Show the icon-nav (Companies / Jobs / Map / GitHub) on the right. Default true. */
+    /** Show the icon-nav (Companies / Jobs / Watchlists / etc.) on the right. Default true. */
     showNav?: boolean
 }
 

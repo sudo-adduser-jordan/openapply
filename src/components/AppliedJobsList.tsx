@@ -118,7 +118,7 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                 ) : (
                     <>
                         {processedJobs.length > 0 && (
-                            <div className='divide-y divide-white/5'>
+                            <div className='divide-y divide-[var(--line)]'>
                                 {processedJobs.map((job, index) => {
                                     const appliedAt = appliedJobsMap.get(job.ats_id)?.applied_at
                                     const appliedDate = formatAppliedDate(appliedAt)
@@ -128,6 +128,7 @@ export function AppliedJobsList({ jobs }: AppliedJobsListProps) {
                                         <JobListItem
                                             key={job.ats_id || `${job.company}-${job.title}-${index}`}
                                             job={job}
+                                            index={index}
                                             actions={
                                                 <>
                                                     {appliedDate && !isEditing && (

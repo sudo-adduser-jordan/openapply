@@ -4,7 +4,7 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { formatExperience, formatSalary, formatJobDate, addUtmParams, getCountry } from '@/utils/format'
 import type { JobMarker } from '@/types'
-import { MapPinIcon, ExternalLinkIcon } from './icons'
+import { MapPinIcon } from './icons'
 import { AppliedJobButton } from '@/components/AppliedJobButton'
 import { SaveJobButton } from '@/components/SaveJobButton'
 
@@ -41,7 +41,10 @@ export function JobItemRow({
     return (
         <div
             key={uniqueKey}
-            className='group flex items-center justify-between gap-3 border-b border-dotted border-[var(--line-strong)] px-3.5 py-2.5 transition-colors last:border-b-0 hover:bg-[var(--hover-bg)]'
+            className={clsx(
+                'group flex items-center justify-between gap-3 border-b border-[var(--line)] px-3.5 py-2.5 transition-colors last:border-b-0 hover:bg-[color-mix(in_oklab,var(--fg)_3.5%,transparent)]',
+                index % 2 === 1 && 'bg-[color-mix(in_oklab,var(--fg)_1.8%,transparent)]',
+            )}
         >
             <div className='min-w-0 flex-1'>
                 <div className='flex items-center gap-2'>
@@ -118,15 +121,6 @@ export function JobItemRow({
                     </span>
                 )}
                 <div className='flex items-center gap-0.5 opacity-80 transition-opacity group-hover:opacity-100'>
-                    <a
-                        href={addUtmParams(job.url)}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        aria-label='Open job posting'
-                        className='grid size-6 place-items-center rounded-md text-[var(--ink-mute)] transition-colors hover:bg-[var(--paper-3)] hover:text-[var(--ink)]'
-                    >
-                        <ExternalLinkIcon width={12} height={12} />
-                    </a>
                     <AppliedJobButton atsId={job.ats_id} name={job.title} company={job.company} variant='icon' />
                     <SaveJobButton atsId={job.ats_id} name={job.title} company={job.company} variant='icon' />
                 </div>

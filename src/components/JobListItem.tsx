@@ -6,7 +6,7 @@ import { formatJobDate } from '@/utils/format'
 import { formatExperience, formatSalary } from '@/utils/format'
 import { addUtmParams } from '@/utils/format'
 import type { JobMarker } from '@/types'
-import { MapPinIcon, ExternalLinkIcon } from './icons'
+import { MapPinIcon } from './icons'
 import type { ReactNode } from 'react'
 
 interface JobListItemProps {
@@ -16,6 +16,7 @@ interface JobListItemProps {
     bottomActions?: ReactNode
     hideCompanyMobile?: boolean
     locationChildren?: ReactNode
+    index?: number
     now?: number
 }
 
@@ -26,10 +27,16 @@ export function JobListItem({
     bottomActions,
     hideCompanyMobile = false,
     locationChildren,
+    index = 0,
     now,
 }: JobListItemProps) {
     return (
-        <div className='pr-4 pt-2.5 pb-2.5'>
+        <div
+            className={clsx(
+                'pr-4 pt-2.5 pb-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--fg)_3.5%,transparent)]',
+                index % 2 === 1 && 'bg-[color-mix(in_oklab,var(--fg)_1.8%,transparent)]',
+            )}
+        >
             <div className='flex items-start justify-between gap-3 mb-1'>
                 <div className='flex items-center gap-2 flex-1 min-w-0'>
                     <a
@@ -85,7 +92,6 @@ export function JobListItem({
                     className='inline-flex items-center gap-1 px-[10px] py-0.5 bg-[var(--paper-3)] text-[var(--ink)] no-underline rounded-md text-[11px] md:text-[12px] font-medium border border-[var(--line)] transition-[border-color,background-color] duration-200 ease-in-out hover:bg-[var(--paper-2)] hover:border-[var(--line-strong)]'
                 >
                     View Job
-                    <ExternalLinkIcon width={10} height={10} className='md:w-[11px] md:h-[11px]' />
                 </Link>
                 {bottomActions}
             </div>

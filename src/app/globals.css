@@ -65,36 +65,37 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Light palette */
+/* Light palette — matches data.stapply.ai (warm cream paper tones). */
 [data-theme='light'] {
-    --paper: #ffffff;
-    --shell: #ffffff;
-    --paper-2: #f9fafb;
-    --paper-3: #f3f4f6;
-    --bg: #ffffff;
-    --fg: #111827;
-    --ink: #111827;
-    --ink-soft: #374151;
+    --paper: #f8f6f1;
+    --shell: #efebe3;
+    --paper-2: #efebe3;
+    --paper-3: #e3ddd3;
+    --bg: #efebe3;
+    --fg: #0b0d12;
+    --ink: #0b0d12;
+    --ink-soft: #3a3f4a;
     --ink-mute: #6b7280;
-    --ink-faint: #9ca3af;
+    --ink-faint: #9aa1ad;
     --muted: #6b7280;
-    --line: rgba(0, 0, 0, 0.1);
-    --line-strong: rgba(0, 0, 0, 0.16);
-    --brand: #2563eb;
-    --brand-deep: #1d4ed8;
-    --brand-tint: rgba(37, 99, 235, 0.1);
-    --violet: #7c3aed;
+    --line: #ddd6cb;
+    --line-strong: #cfc6b8;
+    --brand: #3b82f6;
+    --brand-deep: #2563eb;
+    --brand-tint: #3b82f6;
+    --violet: #8b5cf6;
     --violet-deep: #6d28d9;
-    --violet-tint: rgba(124, 58, 237, 0.1);
+    --violet-tint: #8b5cf6;
     --violet-solid: #6d28d9;
     --violet-solid-hover: #5b21b6;
     --emerald: #059669;
     --emerald-deep: #047857;
     --emerald-tint: rgba(5, 150, 105, 0.1);
-    --c-blue: #2563eb;
+    --c-blue: #3b82f6;
     --c-emerald: #059669;
     --c-amber: #d97706;
     --c-violet: #7c3aed;
+    --c-rose: #e11d48;
     --radius-pill: 999px;
     --hover-bg: color-mix(in oklab, var(--fg) 4%, transparent);
     --header-h: 57px;
@@ -107,6 +108,13 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+    [data-theme='light'] {
+        --brand-tint: color-mix(in srgb, var(--brand) 14%, var(--paper-3));
+        --violet-tint: color-mix(in srgb, var(--violet) 14%, var(--paper-3));
+    }
 }
 
 /* Header/footer chrome always uses Fredoka 400 (matches landing/viewer). */

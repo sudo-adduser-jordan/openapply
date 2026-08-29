@@ -101,11 +101,12 @@ export function SavedJobsList({ jobs }: SavedJobsListProps) {
                 ) : (
                     <>
                         {processedJobs.length > 0 && (
-                            <div className='divide-y divide-white/5'>
+                            <div className='divide-y divide-[var(--line)]'>
                                 {processedJobs.map((job, index) => (
                                     <JobListItem
                                         key={job.ats_id || `${job.company}-${job.title}-${index}`}
                                         job={job}
+                                        index={index}
                                         titleLinkHoverClass='hover:text-[var(--brand)]'
                                         hideCompanyMobile
                                         locationChildren={
